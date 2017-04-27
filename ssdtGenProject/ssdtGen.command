@@ -58,7 +58,7 @@ gIaslGithub="https://raw.githubusercontent.com/mattcarlotta/ssdtGen/master/tools
 gCount=0
 
 #Input from script
-userChosen=$1
+userInput=$1
 
 export TERM=dumb
 #SSDT Table-ID array
@@ -134,7 +134,7 @@ function _checkPreInstalled()
       if [[ $? -ne 0 ]];
         then
           echo ''
-          echo "*—-ERROR—-*Make sure your network connection is active!\n"
+          echo "*—-ERROR—-*Make sure your network connection is active!"
           exit 1
       fi
       #change the IASL file to be executeable
@@ -160,10 +160,8 @@ function _checkDevice_Prop()
   #if device search result is empty, display not found error
   if [ -z "$SSDT_VALUE" ]
     then
-      echo ''
-      echo "${bold}*—-ERROR—-*${normal} There was a problem locating $SSDT_DEVICE's $SSDT_PROP property!"
+      echo "*—-ERROR—-* There was a problem locating $SSDT_DEVICE's $SSDT_PROP property!"
       echo "Please run this script in debug mode to generate a debug text file."
-      echo ''
   fi
 }
 
@@ -852,11 +850,12 @@ function _compileSSDT
   ((gCount++))
   #give user ownership over gen'd SSDTs
   chown $gUSER $gSSDT
-  echo "${STYLE_BOLD}Compiling:${STYLE_RESET} ${gSSDTID}.dsl"
+  echo "Attemping to compile: ${gSSDTID}.dsl"
   #attempt to compile gen'd SSDTs
   iasl -G "$gSSDT"
-  echo "${STYLE_BOLD}Removing:${STYLE_RESET} ${gSSDTID}.dsl"
-  echo '--------------------------------------------------------------------------------'
+  echo "Removing: ${gSSDTID}.dsl"
+  echo ''
+  echo '------------------------------------------------------------------------------------------------------------------------------------------'
   #printf '\n'
   #remove gen'd SSDT-XXXX.dsl files
   rm "$gSSDT"
@@ -883,7 +882,7 @@ function _printHeader()
 {
   #set SSDTs based upon moboID
   gSSDTID="SSDT-${gTableID[$gCount]}"
-  echo 'Creating: '${gSSDTID}'.dsl \n'
+  echo 'Creating: '${gSSDTID}'.dsl'
   #set a new SSDT-XXXX.dsl directory
   gSSDT="${gPath}/${gSSDTID}.dsl"
 
@@ -915,13 +914,13 @@ function _checkIf_PATH_Exists()
       if [ -z "$INCOMPLETENVMEPATH" ];
         then
           echo ''
-          echo "${bold}*—-ERROR—-*${normal} There was a problem locating $NVMEDEVICE's leafnode ($NVMELEAFNODE)!"
+          echo "*—-ERROR—-*There was a problem locating $NVMEDEVICE's leafnode ($NVMELEAFNODE)!"
           echo "Please make sure the ACPI path submitted is correct!"
           _askfor_NVMEPATH
       else
         #otherwise, display INCOMPLETENVMEPATH error
         echo ''
-        echo "${bold}*—-ERROR—-*${normal} There was a problem locating $INCOMPLETENVMEPATH!"
+        echo "*—-ERROR—-* There was a problem locating $INCOMPLETENVMEPATH!"
         echo "Please make sure the ACPI path submitted is correct!"
         _askfor_INCOMPLETENVMEDETAILS
     fi
@@ -942,7 +941,7 @@ function _checkIf_VALIDADDRESS()
       if [[ "${#BRIDGEADDRESS}" -le 2 ]] ;
         then
         echo ''
-        echo "${bold}*—-ERROR—-*${normal} You must include a valid address! Try again"
+        echo "*—-ERROR—-* You must include a valid address! Try again"
         _askfor_PCIBRIDGE
       fi
     else
@@ -950,7 +949,7 @@ function _checkIf_VALIDADDRESS()
       if [[ "$NVME_ACPI_ADRESSS" != 0x* ]] || [[ "${#NVME_ACPI_ADRESSS}" -le 2 ]];
         then
         echo ''
-        echo "${bold}*—-ERROR—-*${normal} You must include a valid address! Try again"
+        echo "*—-ERROR—-* You must include a valid address! Try again"
         _askfor_INCOMPLETENVMEDETAILS
       fi
   fi
@@ -985,7 +984,7 @@ function _askfor_PCIBRIDGE()
       #user input invalid choice
       * )
       echo ''
-      echo "${bold}*—-ERROR—-*${normal} Sorry, but $choice is not a valid option! Try again"
+      echo "*—-ERROR—-* Sorry, but $choice is not a valid option! Try again"
       echo ''
       ;;
     esac
@@ -1076,7 +1075,7 @@ function _checkIf_SSDT_Exists()
     fi
   done
 
-  echo "${bold}*—-ERROR—-*${normal} $buildOne is not a SSDT! Please try again!"
+  echo "*—-ERROR—-* $buildOne is not a SSDT! Please try again!"
 }
 
 ##===============================================================================##
@@ -1084,7 +1083,7 @@ function _checkIf_SSDT_Exists()
 ##===============================================================================##
 function _user_choices()
 {
-  choice=$userChosen
+  choice=$userInput
   case "$choice" in
     # attempt to build all SSDTs
     buildall|BUILDALL )
@@ -1112,6 +1111,7 @@ function _user_choices()
     set -x
     #main true 2>&1 | tee "$dPath"
     echo "${bold}Now running in debug mode!${normal}"
+    userInput="buildall"
     _user_choices 2>&1 | tee "$dPath"
     ioreg -lw0 -p IODeviceTree >> "$dPath"
     set +x
@@ -1128,7 +1128,7 @@ function _user_choices()
     # oops - user made a mistake, show display instructions
     * )
     echo ""
-    echo "*—-ERROR—-*That was not a valid option!"
+    echo "*—-ERROR—-* That was not a valid option! Please try again!"
     echo ""
     exit 0
     ;;
@@ -1173,23 +1173,10 @@ function _checkBoard
   else
     #if moboID doesn't match, display error, exit script
     echo ""
-    echo "*—-ERROR—-*This script only supports X99/Z170 motherboards at the moment!\n"
-    echo ""
-    sleep 1
-    echo "Script was aborted!"
+    echo "*—-ERROR—-*This script only supports X99/Z170 motherboards at the moment!"
     echo ""
     exit 0
   fi
-}
-
-#===============================================================================##
-## GREET USER HEADER #
-##==============================================================================##
-function greet()
-{
-  echo "                                                  ssdtGen Version 0.1.7b - Copyright (c) 2017 by M.F.C."
-  echo  "--------------------------------------------------------------------------------------------------------------------------------------------"
-  sleep 0.25
 }
 
 #===============================================================================##
@@ -1197,8 +1184,6 @@ function greet()
 ##==============================================================================##
 function main()
 {
-#  clear
-#  greet
   _getSIPStat
   _checkPreInstalled
   _user_choices
