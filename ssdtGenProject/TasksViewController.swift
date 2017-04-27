@@ -35,6 +35,12 @@ class TasksViewController: NSViewController {
   var outputPipe:Pipe!
   var buildTask:Process!
   
+  
+  override func viewDidLoad() {
+    self.view.wantsLayer = true
+    self.view.layer?.backgroundColor = CGColor(red: 0/255, green: 67/255, blue: 125/255, alpha: 1);
+    self.outputText.backgroundColor = NSColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1);
+  }
   // Help button action
   @IBAction func helpButton(_ sender: Any) {
     //1.
@@ -170,6 +176,7 @@ class TasksViewController: NSViewController {
       DispatchQueue.main.async(execute: {
         let previousOutput = self.outputText.string ?? ""
         let nextOutput = previousOutput + "\n" + outputString
+        self.outputText.backgroundColor = NSColor(red: 249/255, green: 250/255, blue: 215/255, alpha: 1);
         self.outputText.string = nextOutput
         
         let range = NSRange(location:nextOutput.characters.count,length:0)

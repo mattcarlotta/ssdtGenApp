@@ -57,15 +57,8 @@ gIaslGithub="https://raw.githubusercontent.com/mattcarlotta/ssdtGen/master/tools
 #Count to cycle thru arrays
 gCount=0
 
-#Bold text
-#bold=$(tput bold)
-
-#Underline text
-#underline=$(tput smul)
-#stopunderline=$(tput rmul)
-
-#Normal text
-#normal=$(tput sgr0)
+#Input from script
+userChosen=$1
 
 export TERM=dumb
 #SSDT Table-ID array
@@ -78,30 +71,6 @@ gMoboID=('X99' 'Z170' 'MAXIMUS')
 cr=`echo $'\n.'`
 cr=${cr%.}
 
-#set Terminal window size
-#printf '\e[8;30;102t'
-
-#if user ctrl+c, then cleanup
-#trap '{ _clean_up; exit 1; }' INT
-
-#===============================================================================##
-## PRINT CLEANUP DOTS #
-##==============================================================================##
-function _printDots()
-{
-  #prints 3 dots before terminating
-  local let dots=0
-
-  while [[ $dots -lt 3 ]]
-  do
-    ((dots++))
-    sleep 0.150
-    printf "."
-  done
-
- sleep 0.200
-}
-
 #===============================================================================##
 ## USER ABORTS SCRIPT #
 ##==============================================================================##
@@ -109,61 +78,12 @@ function _clean_up()
 {
   clear
   echo "Cleaning up any left-overs"
-  _printDots
   # remove any left over .dsl files
   rm "${gPath}"/*.dsl 2> /dev/null
   clear
   echo "Script was aborted!"
   exit -0
 }
-
-#===============================================================================##
-## DISPLAY INSTRUCTIONS #
-##==============================================================================##
-function display_instructions()
-{
-  echo ""
-  echo "To build and compile all SSDTS, simply click the BuildAll button"
-  echo ""
-  echo "To build and compile one SSDT, input a SSDT NAME in the blank text box and click the Build button"
-  echo ""
-  echo "         x99/z170"
-  echo "         ---------"
-  echo "       - ALZA/HDAS: Adds x99/z170 support for Realtek on-board sound"
-  echo ""
-  echo "       - EVSS: Adds x99 support for a third PCH sSata controller for IDE, AHCI, RAID storage drives"
-  echo "                     (for up to 6Gb/s transfers)\n"
-  echo ""
-  echo "       - GFX1: Adds x99/z170 support for a single Nvidia graphics card and adds HDMI audio support"
-  echo "                     for the card as well\n"
-  echo ""
-  echo "       - GLAN: Adds x99/z170 support for an Intel ethernet controller"
-  echo ""
-  echo "       - HECI: Intel Management Engine Interface that, in general, adds support for various tasks"
-  echo "                     while the system is booting, running or sleeping\n"
-  echo ""
-  echo "       - NVME: Adds support for a single NVMe drive (MUST be used in conjuction with Rehabman's"
-  echo "                     spoofed HackrNVMeFamily-10_xx_x.kext)\n"
-  echo ""
-  echo "       - LPC0/LPCB: Adds x99/z170 support to AppleLPC.kext for Low Pin Count devices to connect"
-  echo "                               to the CPU"
-  echo ""
-  echo "       - SAT1/SAT0: Adds x99/z170 support for the PCH SATA controller for SATA devices via Legacy or"
-  echo "                     AHCI mode (for up to 6Gb/s transfers)"
-  echo ""
-  echo "       - SMBS/SBUS: Adds x99/z170 support for a SMBus controller that allows communication between"
-  echo "                     external hardware devices (for example, Apple's Mikey driver)"
-  echo ""
-  echo "       - XHC: Adds power options for the USB xHC Host Controller"
-  echo ""
-  echo "       - XOSI: Adds Windows simulated support for DSDT _OSI methods"
-  echo ""
-  echo "To debug the script, simply click the Debug button:"
-  echo "       - Will put the script in a debug mode that will print to a debug_output.txt file until the script has been"
-  echo "         terminated"
-  exit 0
-}
-
 
 #===============================================================================##
 ## CHECK SIP WARNINGS #
@@ -932,12 +852,12 @@ function _compileSSDT
   ((gCount++))
   #give user ownership over gen'd SSDTs
   chown $gUSER $gSSDT
-  printf "${STYLE_BOLD}Compiling:${STYLE_RESET} ${gSSDTID}.dsl\n"
+  echo "${STYLE_BOLD}Compiling:${STYLE_RESET} ${gSSDTID}.dsl"
   #attempt to compile gen'd SSDTs
   iasl -G "$gSSDT"
-  printf "${STYLE_BOLD}Removing:${STYLE_RESET} ${gSSDTID}.dsl\n"
-  printf  "\n%s" '--------------------------------------------------------------------------------'
-  printf '\n'
+  echo "${STYLE_BOLD}Removing:${STYLE_RESET} ${gSSDTID}.dsl"
+  echo '--------------------------------------------------------------------------------'
+  #printf '\n'
   #remove gen'd SSDT-XXXX.dsl files
   rm "$gSSDT"
 
@@ -963,7 +883,7 @@ function _printHeader()
 {
   #set SSDTs based upon moboID
   gSSDTID="SSDT-${gTableID[$gCount]}"
-  printf 'Creating: '${gSSDTID}'.dsl \n'
+  echo 'Creating: '${gSSDTID}'.dsl \n'
   #set a new SSDT-XXXX.dsl directory
   gSSDT="${gPath}/${gSSDTID}.dsl"
 
@@ -1150,16 +1070,13 @@ function _checkIf_SSDT_Exists()
       then
         #set gCount according to found SSDT (0-9)
         gCount=$i
-        echo ''
         #attempt to build and compile SSDT
         _printHeader
         break
     fi
   done
 
-  echo ''
-  echo "${bold}*—-ERROR—-*${normal} $buildOne is not a SSDT!"
-  display_instructions
+  echo "${bold}*—-ERROR—-*${normal} $buildOne is not a SSDT! Please try again!"
 }
 
 ##===============================================================================##
@@ -1167,55 +1084,54 @@ function _checkIf_SSDT_Exists()
 ##===============================================================================##
 function _user_choices()
 {
-  choice=$1
-  #read -p "build all SSDTs(${bold}buildall${normal}) | build a single SSDT(${bold}build NAME${normal}) | debug(${bold}debug${normal}) | help(${bold}help${normal}) | exit(${bold}exit${normal}) $cr--> " choice
-    case "$choice" in
-      # attempt to build all SSDTs
-      buildall|BUILDALL )
+  choice=$userChosen
+  case "$choice" in
+    # attempt to build all SSDTs
+    buildall|BUILDALL )
+    _checkBoard
+    _printHeader
+    exit 0
+    ;;
+    # attempt to build one SSDT
+    build* | BUILD*)
+    buildOne=${choice:6:9}
+    #if NVME was selected, send them to INCOMPLETENVMEDETAILS prompt
+    if [[ "$buildOne" == "NVME" ]];
+      then
+      gCount=0
+      gTableID='NVME'
+      _askfor_INCOMPLETENVMEDETAILS
+      else
       _checkBoard
-      _printHeader
-      exit 0
-      ;;
-      # attempt to build one SSDT
-      build* | BUILD*)
-      buildOne=${choice:6:9}
-      #if NVME was selected, send them to INCOMPLETENVMEDETAILS prompt
-      if [[ "$buildOne" == "NVME" ]];
-        then
-        gCount=0
-        gTableID='NVME'
-        _askfor_INCOMPLETENVMEDETAILS
-        else
-        _checkBoard
-        _checkIf_SSDT_Exists
-      fi
-      exit 0
-      ;;
-      # debug mode
-      debug|DEBUG )
-      set -x
-      #main true 2>&1 | tee "$dPath"
-      echo "${bold}Now running in debug mode!${normal}"
-      _user_choices 2>&1 | tee "$dPath"
-      ioreg -lw0 -p IODeviceTree >> "$dPath"
-      set +x
-      exit 0
-      ;;
-      # display help instructions
-      help|HELP )
-      display_instructions
-      ;;
-      # kill the script
-      exit|EXIT )
-      _clean_up
-      ;;
-      # oops - user made a mistake, show display instructions
-      * )
-      printf "\n"
-      printf "${bold}*—-ERROR—-*${normal} That was not a valid option!"
-      printf "\n"
-      exit 0
-      ;;
+      _checkIf_SSDT_Exists
+    fi
+    exit 0
+    ;;
+    # debug mode
+    debug|DEBUG )
+    set -x
+    #main true 2>&1 | tee "$dPath"
+    echo "${bold}Now running in debug mode!${normal}"
+    _user_choices 2>&1 | tee "$dPath"
+    ioreg -lw0 -p IODeviceTree >> "$dPath"
+    set +x
+    exit 0
+    ;;
+    # display help instructions
+    help|HELP )
+    display_instructions
+    ;;
+    # kill the script
+    exit|EXIT )
+    _clean_up
+    ;;
+    # oops - user made a mistake, show display instructions
+    * )
+    echo ""
+    echo "*—-ERROR—-*That was not a valid option!"
+    echo ""
+    exit 0
+    ;;
   esac
 }
 
@@ -1281,17 +1197,14 @@ function greet()
 ##==============================================================================##
 function main()
 {
-  #user selected option
-  local userChosen=$1
-
-  clear
-  greet
+#  clear
+#  greet
   _getSIPStat
   _checkPreInstalled
-  _user_choices "$1"
+  _user_choices
 }
 
-main "$1"
+main
 
 
 #===============================================================================##

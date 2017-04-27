@@ -11,6 +11,7 @@
 		63B68C0B1EB104CF004AE620 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B68C0A1EB104CF004AE620 /* AppDelegate.swift */; };
 		63B68C0D1EB104EB004AE620 /* ssdtGen.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63B68C0C1EB104EB004AE620 /* ssdtGen.icns */; };
 		63B68C111EB14114004AE620 /* HelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B68C101EB14114004AE620 /* HelpController.swift */; };
+		63E8C7FF1EB279ED000F22DB /* ssdtGenFinal.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63E8C7FE1EB279ED000F22DB /* ssdtGenFinal.icns */; };
 		A1818B5516FE271100684672 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1818B5416FE271100684672 /* Cocoa.framework */; };
 		A1818B5F16FE271100684672 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1818B5D16FE271100684672 /* InfoPlist.strings */; };
 		AD0984A81C92FAC200E71620 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD0984A71C92FAC200E71620 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 		63B68C0A1EB104CF004AE620 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63B68C0C1EB104EB004AE620 /* ssdtGen.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ssdtGen.icns; sourceTree = "<group>"; };
 		63B68C101EB14114004AE620 /* HelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpController.swift; sourceTree = "<group>"; };
+		63E8C7FE1EB279ED000F22DB /* ssdtGenFinal.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ssdtGenFinal.icns; sourceTree = "<group>"; };
 		A1818B5116FE271100684672 /* ssdtGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ssdtGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1818B5416FE271100684672 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		A1818B5716FE271100684672 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				63B68C0C1EB104EB004AE620 /* ssdtGen.icns */,
+				63E8C7FE1EB279ED000F22DB /* ssdtGenFinal.icns */,
 				A1818B5C16FE271100684672 /* ssdtGen-Info.plist */,
 				A1818B5D16FE271100684672 /* InfoPlist.strings */,
 				6360BDE21EB0112900D49D20 /* ssdtGen.command */,
@@ -164,6 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1818B5F16FE271100684672 /* InfoPlist.strings in Resources */,
+				63E8C7FF1EB279ED000F22DB /* ssdtGenFinal.icns in Resources */,
 				AD0984A81C92FAC200E71620 /* Main.storyboard in Resources */,
 				6360BDE31EB0112900D49D20 /* ssdtGen.command in Resources */,
 				63B68C0D1EB104EB004AE620 /* ssdtGen.icns in Resources */,
