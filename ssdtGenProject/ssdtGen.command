@@ -57,9 +57,6 @@ gIaslGithub="https://raw.githubusercontent.com/mattcarlotta/ssdtGen/master/tools
 #Count to cycle thru arrays
 gCount=0
 
-#Input from script
-userInput=$1
-
 export TERM=dumb
 #SSDT Table-ID array
 gTableID=""
@@ -83,66 +80,6 @@ function _clean_up()
   clear
   echo "Script was aborted!"
   exit -0
-}
-
-#===============================================================================##
-## CHECK SIP WARNINGS #
-##==============================================================================##
-function _getSIPStat()
-{
-
-  case "$(/usr/bin/csrutil status)" in
-    #checks to make sure SIP isn't 0x3
-    "System Integrity Protection status: enabled." )
-      echo "*—-WARNING--*S.I.P is enabled..."
-      echo "Its recommended (not required) that you completely disable S.I.P. by setting CsrActiveConfig to 0x67 in your config.plist!"
-      ;;
-    #checks to make sure a custom SIP won't allow unsigned kexts
-    *"Filesystem Protections: enabled"* )
-      echo "*—-WARNING--*S.I.P. is partially disabled, but file system protection is still enabled..."
-      echo "It's recommended (not required) that you completely disable S.I.P. by setting CsrActiveConfig to 0x67 in your config.plist!"
-      ;;
-
-    * )
-      ;;
-  esac
-}
-
-#===============================================================================##
-## CHECK MACIASL AND IASL ARE INSTALLED #
-##==============================================================================##
-function _checkPreInstalled()
-{
-  #check to see if IASL is installed in usr/bin or usr/local/bin
-  if [ -f "$gIaslRootDir" ] || [ -f "$gIaslLocalDir" ];
-    then
-      echo 'IASL64 is already installed!' > /dev/null 2>&1
-    else
-      echo "*—-ERROR—-*IASL64 isn't installed in the either $gIaslRootDir nor your $gIaslLocalDir directory!"
-      echo ""
-      echo "Attempting to download IASL from Github..."
-      #check to see if usr/local/bin exists
-      if [ ! -d "$gUsrLocalDir" ];
-        then
-          echo "$gUsrLocalDir doesn't exist. Creating directory!"
-          mkdir -p $gUsrLocalDir
-        else
-          echo "$gUsrLocalDir already exists" > /dev/null 2>&1
-      fi
-      #download pre-compiled IASL if not installed
-      curl -o $gIaslLocalDir $gIaslGithub
-      if [[ $? -ne 0 ]];
-        then
-          echo ''
-          echo "*—-ERROR—-*Make sure your network connection is active!"
-          exit 1
-      fi
-      #change the IASL file to be executeable
-      chmod +x $gIaslLocalDir
-      echo ""
-      echo "MaciASL has been installed!"
-      echo ""
-  fi
 }
 
 #===============================================================================##
@@ -1078,63 +1015,6 @@ function _checkIf_SSDT_Exists()
   echo "*—-ERROR—-* $buildOne is not a SSDT! Please try again!"
 }
 
-##===============================================================================##
-# GIVE USER CHOICES ON WHAT TO DO #
-##===============================================================================##
-function _user_choices()
-{
-  choice=$userInput
-  case "$choice" in
-    # attempt to build all SSDTs
-    buildall|BUILDALL )
-    _checkBoard
-    _printHeader
-    exit 0
-    ;;
-    # attempt to build one SSDT
-    build* | BUILD*)
-    buildOne=${choice:6:9}
-    #if NVME was selected, send them to INCOMPLETENVMEDETAILS prompt
-    if [[ "$buildOne" == "NVME" ]];
-      then
-      gCount=0
-      gTableID='NVME'
-      _askfor_INCOMPLETENVMEDETAILS
-      else
-      _checkBoard
-      _checkIf_SSDT_Exists
-    fi
-    exit 0
-    ;;
-    # debug mode
-    debug|DEBUG )
-    set -x
-    #main true 2>&1 | tee "$dPath"
-    echo "${bold}Now running in debug mode!${normal}"
-    userInput="buildall"
-    _user_choices 2>&1 | tee "$dPath"
-    ioreg -lw0 -p IODeviceTree >> "$dPath"
-    set +x
-    exit 0
-    ;;
-    # display help instructions
-    help|HELP )
-    display_instructions
-    ;;
-    # kill the script
-    exit|EXIT )
-    _clean_up
-    ;;
-    # oops - user made a mistake, show display instructions
-    * )
-    echo ""
-    echo "*—-ERROR—-* That was not a valid option! Please try again!"
-    echo ""
-    exit 0
-    ;;
-  esac
-}
-
 #===============================================================================##
 ## FIND USER'S MOTHERBOARD #
 ##==============================================================================##
@@ -1179,15 +1059,117 @@ function _checkBoard
   fi
 }
 
+##===============================================================================##
+# GIVE USER CHOICES ON WHAT TO DO #
+##===============================================================================##
+function _user_choices()
+{
+  choice=$choice1
+  case "$choice" in
+    # attempt to build all SSDTs
+    buildall|BUILDALL )
+    _checkBoard
+    _printHeader
+    exit 0
+    ;;
+    # attempt to build one SSDT
+    build* | BUILD*)
+    buildOne=${choice:6:9}
+    #if NVME was selected, send them to INCOMPLETENVMEDETAILS prompt
+    if [[ "$buildOne" == "NVME" ]];
+      then
+      gCount=0
+      gTableID='NVME'
+      _askfor_INCOMPLETENVMEDETAILS
+      else
+      _checkBoard
+      _checkIf_SSDT_Exists
+    fi
+    exit 0
+    ;;
+    # debug mode
+    debug|DEBUG )
+    set -x
+    #main true 2>&1 | tee "$dPath"
+    echo "Now running in debug mode!"
+    choice1=$choice2
+    echo "choice2: $userSelected"
+    _user_choices 2>&1 | tee "$dPath"
+    ioreg -lw0 -p IODeviceTree >> "$dPath"
+    set +x
+    exit 0
+    ;;
+    # display help instructions
+    help|HELP )
+    display_instructions
+    ;;
+    # kill the script
+    exit|EXIT )
+    _clean_up
+    ;;
+    # oops - user made a mistake, show display instructions
+    * )
+    echo ""
+    echo "*—-ERROR—-* That was not a valid option! Please try again!"
+    echo ""
+    exit 0
+    ;;
+  esac
+}
+
+#===============================================================================##
+## CHECK MACIASL AND IASL ARE INSTALLED #
+##==============================================================================##
+function _checkPreInstalled()
+{
+  #check to see if IASL is installed in usr/bin or usr/local/bin
+  if [ -f "$gIaslRootDir" ] || [ -f "$gIaslLocalDir" ];
+    then
+      echo 'IASL64 is already installed!' > /dev/null 2>&1
+    else
+      echo "*—-ERROR—-*IASL64 isn't installed in the either $gIaslRootDir nor your $gIaslLocalDir directory!"
+      echo ""
+      echo "Attempting to download IASL from Github..."
+      #check to see if usr/local/bin exists
+      if [ ! -d "$gUsrLocalDir" ];
+        then
+          echo "$gUsrLocalDir doesn't exist. Creating directory!"
+          mkdir -p $gUsrLocalDir
+        else
+          echo "$gUsrLocalDir already exists" > /dev/null 2>&1
+      fi
+      #download pre-compiled IASL if not installed
+      curl -o $gIaslLocalDir $gIaslGithub
+      if [[ $? -ne 0 ]];
+        then
+          echo ''
+          echo "*—-ERROR—-*Make sure your network connection is active!"
+          exit 1
+      fi
+      #change the IASL file to be executeable
+      chmod +x $gIaslLocalDir
+      echo ""
+      echo "MaciASL has been installed!"
+      echo ""
+  fi
+}
+
 #===============================================================================##
 ## START PROGRAM #
 ##==============================================================================##
 function main()
 {
-  _getSIPStat
   _checkPreInstalled
   _user_choices
 }
+
+#Selected input mode
+choice1=$1 #debug mode or buildAll or build
+choice2=$2 #buildAll or build
+choice3=$3
+choice4=$4
+choice5=$5
+# exit 0
 
 main
 

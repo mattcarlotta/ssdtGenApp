@@ -30,17 +30,20 @@ class TasksViewController: NSViewController {
   @IBOutlet var buildButton:NSButton!
   @IBOutlet var userInput: NSTextField!
   @IBOutlet var buildAllButton: NSButton!
+  @IBOutlet var debugButton: NSButton!
   
   dynamic var isRunning = false
   var outputPipe:Pipe!
   var buildTask:Process!
-  
-  
+  var debugModeSelect = "Unselected"
+ 
   override func viewDidLoad() {
     self.view.wantsLayer = true
-    self.view.layer?.backgroundColor = CGColor(red: 0/255, green: 67/255, blue: 125/255, alpha: 1);
-    self.outputText.backgroundColor = NSColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1);
+//    self.view.layer?.backgroundColor = CGColor(red: 0/255, green: 67/255, blue: 125/255, alpha: 1);
+//    self.outputText.backgroundColor = NSColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1);
   }
+  
+  
   // Help button action
   @IBAction func helpButton(_ sender: Any) {
     //1.
@@ -78,6 +81,17 @@ class TasksViewController: NSViewController {
     runScript(arguments)
 
   }
+    
+  @IBAction func setDebugState(_ sender: Any) {
+    if ((sender as AnyObject).state == NSOnState) {
+        debugModeSelect = "Selected"
+        print(debugButton.state)
+    }
+    else {
+        debugModeSelect = "Unselected"
+        print(debugButton.state)
+    }
+  }
   
   // BuildOne button action
   @IBAction func buildOne(_ sender:AnyObject) {
@@ -87,9 +101,10 @@ class TasksViewController: NSViewController {
     } else {
     //1.
     outputText.string = ""
-    
-    //3
     var arguments:[String] = []
+        if (debugModeSelect == "Selected") {
+            arguments.append("debug")
+        }
     arguments.append("build " + userInput.stringValue)
     
     //6.
@@ -135,6 +150,7 @@ class TasksViewController: NSViewController {
         task in
         DispatchQueue.main.async(execute: {
           self.buildButton.isEnabled = true
+          self.debugButton.state = 0
           self.buildAllButton.isEnabled = true
           self.spinner.stopAnimation(self)
           self.isRunning = false
