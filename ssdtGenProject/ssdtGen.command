@@ -1078,6 +1078,8 @@ function _user_choices()
     #if NVME was selected, send them to INCOMPLETENVMEDETAILS prompt
     if [[ "$buildOne" == "NVME" ]];
       then
+      echo 'User selected NVME!'
+      exit 0
       gCount=0
       gTableID='NVME'
       _askfor_INCOMPLETENVMEDETAILS
@@ -1164,12 +1166,22 @@ function main()
 }
 
 #Selected input mode
-choice1=$1 #debug mode or buildAll or build
-choice2=$2 #buildAll or build
+choice1=$1 #debug script
+
+#Check to see if debug is active, if not replace choice1
+if [ -z "$1" ]
+  then
+    #if empty, use $2
+    choice1=$2
+    echo "$choice1 was set to option 1"
+  else
+    choice2=$2 #buildAll or build
+    echo "$choice2 was set to option 2"
+fi
+
 choice3=$3
 choice4=$4
 choice5=$5
-# exit 0
 
 main
 
