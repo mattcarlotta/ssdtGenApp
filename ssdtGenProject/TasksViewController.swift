@@ -44,32 +44,20 @@ class TasksViewController: NSViewController {
   var debugScript = ""
   var buildSSDT = ""
   var incompleteACPI = ""
-  var choice4 = ""
-  var choice5 = ""
+  var completeACPI = ""
+  var pciBridge = ""
  
   override func viewDidLoad() {
     self.view.wantsLayer = true
 //    self.view.layer?.backgroundColor = CGColor(red: 0/255, green: 67/255, blue: 125/255, alpha: 1);
 //    self.outputText.backgroundColor = NSColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1);
   }
-//    @IBAction func checkBoxDebug(_ sender: Any) {
-//        if ((sender as AnyObject).state == NSOnState) {
-//            print("Checked")
-//            print(acpiCheckBox.state)
-//        }
-//        else {
-//           print("Unchecked")
-//           print(acpiCheckBox.state)
-//        }
-//    }
-  
+
   @IBAction func setDebugMode(_ sender: Any) {
     if ((sender as AnyObject).state == NSOnState) {
         debugScript = "debug"
-        print(debugScript)
       } else {
         debugScript = ""
-        print(debugScript)
       }
 
   }
@@ -126,10 +114,10 @@ class TasksViewController: NSViewController {
           return
         } else {
           incompleteACPI = incompleteTextInput.stringValue
-          print(incompleteACPI)
-          arguments.append(incompleteACPI)
-        }
+          }
       }
+      arguments.append(incompleteACPI)
+        
       
       // check to see if ACPI checkbox has been checked and is not empty
       if (acpiCheckBox.state == 1) {
@@ -137,10 +125,10 @@ class TasksViewController: NSViewController {
           outputText.string = "*—-ERROR—-* You must include the ACPI Location!"
           return
         } else {
-          incompleteACPI = acpiTextInput.stringValue
-          arguments.append(incompleteACPI)
+          completeACPI = acpiTextInput.stringValue
         }
       }
+      arguments.append(completeACPI)
       
       // check to see if PCI Bridge checkbox has been checked and is not empty
       if (pcibridgeCheckBox.state == 1) {
@@ -148,9 +136,10 @@ class TasksViewController: NSViewController {
           outputText.string = "*—-ERROR—-* You must include the PCI Bridge Location!"
           return
         } else {
-          arguments.append(pcibridgeTextInput.stringValue)
+          pciBridge = pcibridgeTextInput.stringValue
         }
       }
+      arguments.append(pciBridge)
       
 
     }
@@ -172,6 +161,7 @@ class TasksViewController: NSViewController {
     //1 - Reset text boxs while script is running
     acpiTextInput.stringValue = ""
     incompleteTextInput.stringValue = ""
+    pcibridgeTextInput.stringValue = ""
     userInput.stringValue = ""
     
     //2 - Disable buttons while script is running
@@ -180,6 +170,7 @@ class TasksViewController: NSViewController {
     buildAllButton.isEnabled = false
     debugButton.isEnabled = false
     incompleteCheckBox.isEnabled = false
+    pcibridgeCheckBox.isEnabled = false
     spinner.startAnimation(self)
     
     isRunning = true
@@ -209,6 +200,8 @@ class TasksViewController: NSViewController {
           self.acpiCheckBox.isEnabled = true
           self.incompleteCheckBox.state = 0
           self.incompleteCheckBox.isEnabled = true
+          self.pcibridgeCheckBox.state = 0
+          self.pcibridgeCheckBox.isEnabled = true
           self.buildButton.isEnabled = true
           self.debugButton.isEnabled = true
           self.debugButton.state = 0

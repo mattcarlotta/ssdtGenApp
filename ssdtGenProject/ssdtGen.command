@@ -931,31 +931,19 @@ function _askfor_PCIBRIDGE()
 ##===============================================================================##
 # ASK USER WHERE NVME IS LOCATED #
 ##===============================================================================##
-function _askfor_NVMEPATH()
+function _set_COMPLETENVMEDETAILS()
 {
-  echo ''
-  read -p "What is the NVME's ACPI path? For example, write ${bold}BR1B.H000${normal}, or ${bold}RP04.PSXS${normal}, or ${bold}PEG0.PEGP${normal}, and so on. $cr--> " choice
-    case "$choice" in
-      #user wants to exit script
-      exit|EXIT )
-      _clean_up
-      ;;
-      #user specified a device and leafnode
-      * )
-      NVME_ACPI_PATH=$choice #full ACPI path
-      NVMEDEVICE=${choice:0:4} #device path (BR1B)
-      NVMELEAFNODE=${choice:5:4} #leafnode (H000)
-      #make sure the ACPI path exists
-      _checkIf_PATH_Exists
-      #if it does exist, send them to PCI bridge prompt
-      _askfor_PCIBRIDGE
-      echo ''
-      #if no PCI bridge, set gCount according to found SSDT (10)
-      gCount=$i
-      #attempt to build and compile SSDT
-      _printHeader
-      ;;
-  esac
+  NVME_ACPI_PATH=$choice #full ACPI path
+  NVMEDEVICE=${choice4:0:4} #device path (BR1B)
+  NVMELEAFNODE=${choice4:5:4} #leafnode (H000)
+  #make sure the ACPI path exists
+  _checkIf_PATH_Exists
+  #if it does exist, send them to PCI bridge prompt
+  #_askfor_PCIBRIDGE
+  #if no PCI bridge, set gCount according to found SSDT (10)
+  gCount=$i
+  #attempt to build and compile SSDT
+  _printHeader
 }
 
 ##===============================================================================##
@@ -1065,12 +1053,19 @@ function _user_choices()
       echo 'User selected NVME!'
       gCount=0
       gTableID='NVME'
+      echo "$choice4 is choice4!"
       if [ ! -z "$choice3" ];
         then
           echo 'User selected incomplete NVME!'
           _set_INCOMPLETENVMEDETAILS
+          exit 0
+        elif [ ! -z "$choice4" ];
+          then
+          echo 'User selected complete NVME!'
+          _set_COMPLETENVMEDETAILS
+          exit 0
         else
-          echo 'Choice3 is empty'
+          echo 'Choice3 and Choice4 are empty'
           exit 0
           _checkBoard
           _checkIf_SSDT_Exists
@@ -1084,7 +1079,6 @@ function _user_choices()
     #main true 2>&1 | tee "$dPath"
     echo "Now running in debug mode!"
     choice1=$choice2
-    echo "choice2: $userSelected"
     _user_choices 2>&1 | tee "$dPath"
     ioreg -lw0 -p IODeviceTree >> "$dPath"
     set +x
@@ -1158,7 +1152,7 @@ function main()
 choice1=$1 #debug script
 
 #Check to see if debug is active, if not replace choice1
-if [ -z "$1" ]
+if [ -z "$1" ];
   then
     #if empty, use $2
     choice1=$2
@@ -1171,7 +1165,9 @@ fi
 choice3=$3 #Incomplete ACPI
 echo "$choice3 - choice3 was set to option 3"
 choice4=$4
+echo "$choice4 - choice4 was set to option 4"
 choice5=$5
+echo "$choice5 - choice4 was set to option 5"
 
 main
 
