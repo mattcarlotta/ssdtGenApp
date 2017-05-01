@@ -37,6 +37,9 @@ class TasksViewController: NSViewController {
   @IBOutlet var pcibridgeTextInput: NSTextField!
   @IBOutlet var incompleteCheckBox: NSButton!
   @IBOutlet var incompleteTextInput: NSTextField!
+  @IBOutlet var terminateButton: NSButton!
+  @IBOutlet var nvmeLabel: NSTextField!
+  
   
   dynamic var isRunning = false
   var outputPipe:Pipe!
@@ -46,20 +49,26 @@ class TasksViewController: NSViewController {
   var incompleteACPI = ""
   var completeACPI = ""
   var pciBridge = ""
+
  
   override func viewDidLoad() {
+    let pstyle = NSMutableParagraphStyle()
+    pstyle.alignment = .left
     self.view.wantsLayer = true
-//    self.view.layer?.backgroundColor = CGColor(red: 0/255, green: 67/255, blue: 125/255, alpha: 1);
+//    self.view.layer?.backgroundColor = CGColor(red: 66/255, green: 107/255, blue: 244/255, alpha: 1);
+    acpiCheckBox.attributedTitle = NSAttributedString(string: "Complete ACPI", attributes: [ NSForegroundColorAttributeName : NSColor.white, NSParagraphStyleAttributeName : pstyle ])
+    pcibridgeCheckBox.attributedTitle = NSAttributedString(string: "PCI Bridge", attributes: [ NSForegroundColorAttributeName : NSColor.white, NSParagraphStyleAttributeName : pstyle ])
+     incompleteCheckBox.attributedTitle = NSAttributedString(string: "Incomplete ACPI", attributes: [ NSForegroundColorAttributeName : NSColor.white, NSParagraphStyleAttributeName : pstyle ])
+    nvmeLabel.textColor = NSColor.gray
 //    self.outputText.backgroundColor = NSColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1);
   }
-
-  @IBAction func setDebugMode(_ sender: Any) {
-    
+  
+  @IBAction func toggleDebugMode(_ sender: Any) {
     if ((sender as AnyObject).state == NSOnState) {
-        debugScript = "debug"
-      } else {
-        debugScript = ""
-      }
+      debugScript = "debug"
+    } else {
+      debugScript = ""
+    }
 
   }
 
@@ -201,9 +210,11 @@ class TasksViewController: NSViewController {
           self.incompleteCheckBox.isEnabled = true
           self.pcibridgeCheckBox.state = 0
           self.pcibridgeCheckBox.isEnabled = true
+          self.buildButton.state = 0
           self.buildButton.isEnabled = true
-          self.debugButton.isEnabled = true
           self.debugButton.state = 0
+          self.debugButton.isEnabled = true
+          self.buildAllButton.state = 0
           self.buildAllButton.isEnabled = true
           self.spinner.stopAnimation(self)
           self.isRunning = false
