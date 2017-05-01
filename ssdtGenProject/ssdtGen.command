@@ -875,7 +875,7 @@ function _checkIf_VALIDADDRESS()
   if [ "$BR" == true ];
     then
       #if BRIDGEADDRESS is less than or equal to 2, then show error, then send back to prompt
-      if [[ "${#BRIDGEADDRESS}" -le 2 ]] ;
+      if [[ "$BRIDGEADDRESS" != 0x* ]] || [[ "${#BRIDGEADDRESS}" -le 2 ]] ;
         then
         echo ''
         echo "*—-ERROR—-* You must include a valid PCI Bridge address! Try again"
@@ -895,37 +895,12 @@ function _checkIf_VALIDADDRESS()
 ##===============================================================================##
 # ASK USER IF NVME IS BEHIND PCI BRIDGE #
 ##===============================================================================##
-function _askfor_PCIBRIDGE()
+function _set_PCIBRIDGE()
 {
-  echo ''
-  while true; do
-  read -p "Is the NVME behind a PCI bridge? If so, write the PCI bridge address ${bold}0x0000${normal}, otherwise write ${bold}no${normal}. $cr--> " choice
-    case "$choice" in
-      #user wants to exit script
-      exit|EXIT )
-      _clean_up
-      break
-      ;;
-      no|NO )
-      #NVME isn't behind a PCI bridge
-      echo 'NVME isn/t behind a PCI bridge!' > /dev/null 2>&1
-      break
-      ;;
-      #NVME is behind a PCI bridge
-      0x*|0X* )
-      BRIDGEADDRESS=${choice:0:8}
-      #check if PCI bridge address is in the correct syntax
-      _checkIf_VALIDADDRESS true
-      break
-      ;;
-      #user input invalid choice
-      * )
-      echo ''
-      echo "*—-ERROR—-* Sorry, but $choice is not a valid option! Try again"
-      echo ''
-      ;;
-    esac
-  done
+  BRIDGEADDRESS=${choice5:0:8}
+  echo "$choice5 is choice5"
+  #check if PCI bridge address is in the correct syntax
+  _checkIf_VALIDADDRESS true
 }
 
 ##===============================================================================##
@@ -939,7 +914,11 @@ function _set_COMPLETENVMEDETAILS()
   #make sure the ACPI path exists
   _checkIf_PATH_Exists
   #if it does exist, send them to PCI bridge prompt
-  #_askfor_PCIBRIDGE
+  if [ ! -z "$choice5" ];
+    then
+      echo 'User requires PCI Bridge address!'
+      _set_PCIBRIDGE
+  fi
   #if no PCI bridge, set gCount according to found SSDT (10)
   gCount=$i
   #attempt to build and compile SSDT
@@ -1058,15 +1037,11 @@ function _user_choices()
         then
           echo 'User selected incomplete NVME!'
           _set_INCOMPLETENVMEDETAILS
-          exit 0
         elif [ ! -z "$choice4" ];
           then
           echo 'User selected complete NVME!'
           _set_COMPLETENVMEDETAILS
-          exit 0
         else
-          echo 'Choice3 and Choice4 are empty'
-          exit 0
           _checkBoard
           _checkIf_SSDT_Exists
       fi
