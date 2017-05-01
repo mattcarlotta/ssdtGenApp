@@ -43,7 +43,7 @@ class TasksViewController: NSViewController {
   var buildTask:Process!
   var debugScript = ""
   var buildSSDT = ""
-  var choice3 = ""
+  var incompleteACPI = ""
   var choice4 = ""
   var choice5 = ""
  
@@ -119,13 +119,26 @@ class TasksViewController: NSViewController {
         return
       }
       
+      // check to see if Incomplete ACPI checkbox has been checked and is not empty
+      if (incompleteCheckBox.state == 1) {
+        if ((incompleteTextInput.stringValue).isEmpty) {
+          outputText.string = "*—-ERROR—-* You must include the Incomplete ACPI Location!"
+          return
+        } else {
+          incompleteACPI = incompleteTextInput.stringValue
+          print(incompleteACPI)
+          arguments.append(incompleteACPI)
+        }
+      }
+      
       // check to see if ACPI checkbox has been checked and is not empty
       if (acpiCheckBox.state == 1) {
         if ((acpiTextInput.stringValue).isEmpty) {
           outputText.string = "*—-ERROR—-* You must include the ACPI Location!"
           return
         } else {
-          arguments.append(acpiTextInput.stringValue)
+          incompleteACPI = acpiTextInput.stringValue
+          arguments.append(incompleteACPI)
         }
       }
       
@@ -135,17 +148,7 @@ class TasksViewController: NSViewController {
           outputText.string = "*—-ERROR—-* You must include the PCI Bridge Location!"
           return
         } else {
-          arguments.append(incompleteCheckBox.stringValue)
-        }
-      }
-      
-      // check to see if Incomplete ACPI checkbox has been checked and is not empty
-      if (incompleteCheckBox.state == 1) {
-        if ((incompleteTextInput.stringValue).isEmpty) {
-          outputText.string = "*—-ERROR—-* You must include the Incomplete ACPI Location!"
-          return
-        } else {
-          arguments.append(incompleteCheckBox.stringValue)
+          arguments.append(pcibridgeTextInput.stringValue)
         }
       }
       
@@ -168,6 +171,7 @@ class TasksViewController: NSViewController {
     
     //1 - Reset text boxs while script is running
     acpiTextInput.stringValue = ""
+    incompleteTextInput.stringValue = ""
     userInput.stringValue = ""
     
     //2 - Disable buttons while script is running
@@ -175,6 +179,7 @@ class TasksViewController: NSViewController {
     buildButton.isEnabled = false
     buildAllButton.isEnabled = false
     debugButton.isEnabled = false
+    incompleteCheckBox.isEnabled = false
     spinner.startAnimation(self)
     
     isRunning = true
@@ -202,6 +207,8 @@ class TasksViewController: NSViewController {
         DispatchQueue.main.async(execute: {
           self.acpiCheckBox.state = 0
           self.acpiCheckBox.isEnabled = true
+          self.incompleteCheckBox.state = 0
+          self.incompleteCheckBox.isEnabled = true
           self.buildButton.isEnabled = true
           self.debugButton.isEnabled = true
           self.debugButton.state = 0

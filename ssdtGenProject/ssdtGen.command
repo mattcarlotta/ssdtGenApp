@@ -853,13 +853,13 @@ function _checkIf_PATH_Exists()
           echo ''
           echo "*—-ERROR—-*There was a problem locating $NVMEDEVICE's leafnode ($NVMELEAFNODE)!"
           echo "Please make sure the ACPI path submitted is correct!"
-          _askfor_NVMEPATH
+          exit 0
       else
         #otherwise, display INCOMPLETENVMEPATH error
         echo ''
         echo "*—-ERROR—-* There was a problem locating $INCOMPLETENVMEPATH!"
         echo "Please make sure the ACPI path submitted is correct!"
-        _askfor_INCOMPLETENVMEDETAILS
+        exit 0
     fi
   fi
 }
@@ -878,16 +878,16 @@ function _checkIf_VALIDADDRESS()
       if [[ "${#BRIDGEADDRESS}" -le 2 ]] ;
         then
         echo ''
-        echo "*—-ERROR—-* You must include a valid address! Try again"
-        _askfor_PCIBRIDGE
+        echo "*—-ERROR—-* You must include a valid PCI Bridge address! Try again"
+        exit 0
       fi
     else
       #if NVME_ACPI_ADRESSS is not at least "0x" or is <= 2, then show error, then send back to prompt
       if [[ "$NVME_ACPI_ADRESSS" != 0x* ]] || [[ "${#NVME_ACPI_ADRESSS}" -le 2 ]];
         then
         echo ''
-        echo "*—-ERROR—-* You must include a valid address! Try again"
-        _askfor_INCOMPLETENVMEDETAILS
+        echo "*—-ERROR—-* You must include a valid ACPI address! Try again"
+        exit 0
       fi
   fi
 }
@@ -961,37 +961,21 @@ function _askfor_NVMEPATH()
 ##===============================================================================##
 # ASK USER IF NVME PATH IS INCOMPLETE #
 ##===============================================================================##
-function _askfor_INCOMPLETENVMEDETAILS()
+function _set_INCOMPLETENVMEDETAILS()
 {
-  echo ''
-  read -p "Is the NVME's ACPI path incomplete? If so, write the device and address. For example: ${bold}BR1B 0x0000${normal}, or ${bold}RP04 0x0000${normal}, or ${bold}PEG0 0x0000${normal}, and so on. Otherwise, just write ${bold}no${normal}. $cr--> " choice
-    case "$choice" in
-      #user wants to exit script
-      exit|EXIT )
-      _clean_up
-      ;;
-      #NVME path isn't incomplete, send to NVMEPATH prompt
-      no|NO )
-      echo 'NVME/s ACPI path isn/t incomplete!' > /dev/null 2>&1
-      _askfor_NVMEPATH
-      ;;
-      #user specified device and address
-      * )
-      NVME_ACPI_PATH=${choice:0:4} #device (BR1B)
-      NVME_ACPI_ADRESSS=${choice:5:10} #address (0x8000)
-      INCOMPLETENVMEPATH=$NVME_ACPI_PATH #device (BR1B) used for checking against
-      NVMEDEVICE=$NVME_ACPI_PATH #device (BR1B) used for checking against
-      #check if NVME device address is in the correct syntax
-      _checkIf_VALIDADDRESS
-      #make sure the ACPI path exists
-      _checkIf_PATH_Exists
-      echo ''
-      #if path exists and address is in the correct syntax, set gCount according to found SSDT (10)
-      gCount=$i
-      #attempt to build and compile SSDT
-      _printHeader
-      ;;
-  esac
+  #user specified device and address
+  NVME_ACPI_PATH=${choice3:0:4} #device (BR1B)
+  NVME_ACPI_ADRESSS=${choice3:5:10} #address (0x8000)
+  INCOMPLETENVMEPATH=$NVME_ACPI_PATH #device (BR1B) used for checking against
+  NVMEDEVICE=$NVME_ACPI_PATH #device (BR1B) used for checking against
+  #check if NVME device address is in the correct syntax
+  _checkIf_VALIDADDRESS
+  #make sure the ACPI path exists
+  _checkIf_PATH_Exists
+  #if path exists and address is in the correct syntax, set gCount according to found SSDT (10)
+  gCount=$i
+  #attempt to build and compile SSDT
+  _printHeader
 }
 
 ##===============================================================================##
@@ -1079,13 +1063,18 @@ function _user_choices()
     if [[ "$buildOne" == "NVME" ]];
       then
       echo 'User selected NVME!'
-      exit 0
       gCount=0
       gTableID='NVME'
-      _askfor_INCOMPLETENVMEDETAILS
-      else
-      _checkBoard
-      _checkIf_SSDT_Exists
+      if [ ! -z "$choice3" ];
+        then
+          echo 'User selected incomplete NVME!'
+          _set_INCOMPLETENVMEDETAILS
+        else
+          echo 'Choice3 is empty'
+          exit 0
+          _checkBoard
+          _checkIf_SSDT_Exists
+      fi
     fi
     exit 0
     ;;
@@ -1173,13 +1162,14 @@ if [ -z "$1" ]
   then
     #if empty, use $2
     choice1=$2
-    echo "$choice1 was set to option 1"
+    echo "$choice1 - choice1 was set to option 1"
   else
     choice2=$2 #buildAll or build
-    echo "$choice2 was set to option 2"
+    echo "$choice2 - choice2 was set to option 2"
 fi
 
-choice3=$3
+choice3=$3 #Incomplete ACPI
+echo "$choice3 - choice3 was set to option 3"
 choice4=$4
 choice5=$5
 
