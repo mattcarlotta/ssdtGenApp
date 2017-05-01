@@ -897,8 +897,7 @@ function _checkIf_VALIDADDRESS()
 ##===============================================================================##
 function _set_PCIBRIDGE()
 {
-  BRIDGEADDRESS=${choice5:0:8}
-  echo "$choice5 is choice5"
+  BRIDGEADDRESS=${pciBridge:0:8}
   #check if PCI bridge address is in the correct syntax
   _checkIf_VALIDADDRESS true
 }
@@ -908,13 +907,13 @@ function _set_PCIBRIDGE()
 ##===============================================================================##
 function _set_COMPLETENVMEDETAILS()
 {
-  NVME_ACPI_PATH=$choice #full ACPI path
-  NVMEDEVICE=${choice4:0:4} #device path (BR1B)
-  NVMELEAFNODE=${choice4:5:4} #leafnode (H000)
+  NVME_ACPI_PATH=$completeACPI #full ACPI path
+  NVMEDEVICE=${completeACPI:0:4} #device path (BR1B)
+  NVMELEAFNODE=${completeACPI:5:4} #leafnode (H000)
   #make sure the ACPI path exists
   _checkIf_PATH_Exists
   #if it does exist, send them to PCI bridge prompt
-  if [ ! -z "$choice5" ];
+  if [ ! -z "$pciBridge" ];
     then
       echo 'User requires PCI Bridge address!'
       _set_PCIBRIDGE
@@ -931,8 +930,8 @@ function _set_COMPLETENVMEDETAILS()
 function _set_INCOMPLETENVMEDETAILS()
 {
   #user specified device and address
-  NVME_ACPI_PATH=${choice3:0:4} #device (BR1B)
-  NVME_ACPI_ADRESSS=${choice3:5:10} #address (0x8000)
+  NVME_ACPI_PATH=${incompleteACPI:0:4} #device (BR1B)
+  NVME_ACPI_ADRESSS=${incompleteACPI:5:10} #address (0x8000)
   INCOMPLETENVMEPATH=$NVME_ACPI_PATH #device (BR1B) used for checking against
   NVMEDEVICE=$NVME_ACPI_PATH #device (BR1B) used for checking against
   #check if NVME device address is in the correct syntax
@@ -1015,7 +1014,7 @@ function _checkBoard
 ##===============================================================================##
 function _user_choices()
 {
-  choice=$choice1
+  choice=$buildSSDT
   case "$choice" in
     # attempt to build all SSDTs
     buildall|BUILDALL )
@@ -1032,40 +1031,21 @@ function _user_choices()
       echo 'User selected NVME!'
       gCount=0
       gTableID='NVME'
-      echo "$choice4 is choice4!"
-      if [ ! -z "$choice3" ];
+      if [ ! -z "$incompleteACPI" ];
         then
           echo 'User selected incomplete NVME!'
           _set_INCOMPLETENVMEDETAILS
-        elif [ ! -z "$choice4" ];
+        if [ ! -z "$completeACPI" ];
           then
           echo 'User selected complete NVME!'
           _set_COMPLETENVMEDETAILS
-        else
-          _checkBoard
-          _checkIf_SSDT_Exists
+        fi
       fi
+      else
+        _checkBoard
+        _checkIf_SSDT_Exists
     fi
     exit 0
-    ;;
-    # debug mode
-    debug|DEBUG )
-    set -x
-    #main true 2>&1 | tee "$dPath"
-    echo "Now running in debug mode!"
-    choice1=$choice2
-    _user_choices 2>&1 | tee "$dPath"
-    ioreg -lw0 -p IODeviceTree >> "$dPath"
-    set +x
-    exit 0
-    ;;
-    # display help instructions
-    help|HELP )
-    display_instructions
-    ;;
-    # kill the script
-    exit|EXIT )
-    _clean_up
     ;;
     # oops - user made a mistake, show display instructions
     * )
@@ -1124,27 +1104,29 @@ function main()
 }
 
 #Selected input mode
-choice1=$1 #debug script
+debugScript=$1 #debug script
 
-#Check to see if debug is active, if not replace choice1
-if [ -z "$1" ];
+#buildAll or build
+buildSSDT=$2
+
+#Incomplete ACPI
+incompleteACPI=$3
+
+#Complete ACPI
+completeACPI=$4
+
+#PCI Bridge
+pciBridge=$5
+
+if [ ! -z "$debugScript" ];
   then
-    #if empty, use $2
-    choice1=$2
-    echo "$choice1 - choice1 was set to option 1"
+    set -x
+    main 2>&1 | tee "$dPath"
+    set +x
+    exit 0
   else
-    choice2=$2 #buildAll or build
-    echo "$choice2 - choice2 was set to option 2"
+    main
 fi
-
-choice3=$3 #Incomplete ACPI
-echo "$choice3 - choice3 was set to option 3"
-choice4=$4
-echo "$choice4 - choice4 was set to option 4"
-choice5=$5
-echo "$choice5 - choice4 was set to option 5"
-
-main
 
 
 #===============================================================================##

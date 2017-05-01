@@ -54,6 +54,7 @@ class TasksViewController: NSViewController {
   }
 
   @IBAction func setDebugMode(_ sender: Any) {
+    
     if ((sender as AnyObject).state == NSOnState) {
         debugScript = "debug"
       } else {
@@ -88,26 +89,27 @@ class TasksViewController: NSViewController {
       outputText.string = "*—-ERROR—-* Please add input before pressing build!"
     } else {
     
-    // Clear output
+    //1 - Clear output
     outputText.string = ""
       
-    // Set Choice Option
+    //2 - Set Choice Option
     buildSSDT = ("build " + userInput.stringValue)
     
-    // Set arguments to pass to script
+    //3 - Set arguments to pass to script
     var arguments:[String] = []
     arguments.append(debugScript)
     arguments.append(buildSSDT)
     
+    //4 - Check if NVME was selected
     if (userInput.stringValue == "NVME") {
       
-      // check to make sure either ACPI or Incomplete has been checked
+      //1 - Check to make sure either ACPI or Incomplete has been checked
       if (acpiCheckBox.state == 0 && incompleteCheckBox.state == 0 || acpiCheckBox.state == 1 &&  incompleteCheckBox.state == 1 ) {
         outputText.string = "*—-ERROR—-* You can only select either a complete ACPI Location or Incomplete ACPI location."
         return
       }
       
-      // check to see if Incomplete ACPI checkbox has been checked and is not empty
+      //2 - Check to see if Incomplete ACPI checkbox has been checked and is not empty
       if (incompleteCheckBox.state == 1) {
         if ((incompleteTextInput.stringValue).isEmpty) {
           outputText.string = "*—-ERROR—-* You must include the Incomplete ACPI Location!"
@@ -119,7 +121,7 @@ class TasksViewController: NSViewController {
       arguments.append(incompleteACPI)
         
       
-      // check to see if ACPI checkbox has been checked and is not empty
+      //3 - Check to see if ACPI checkbox has been checked and is not empty
       if (acpiCheckBox.state == 1) {
         if ((acpiTextInput.stringValue).isEmpty) {
           outputText.string = "*—-ERROR—-* You must include the ACPI Location!"
@@ -130,7 +132,7 @@ class TasksViewController: NSViewController {
       }
       arguments.append(completeACPI)
       
-      // check to see if PCI Bridge checkbox has been checked and is not empty
+      //4 - Check to see if PCI Bridge checkbox has been checked and is not empty
       if (pcibridgeCheckBox.state == 1) {
         if ((pcibridgeTextInput.stringValue).isEmpty) {
           outputText.string = "*—-ERROR—-* You must include the PCI Bridge Location!"
@@ -141,25 +143,22 @@ class TasksViewController: NSViewController {
       }
       arguments.append(pciBridge)
       
-
     }
-
-    //6.
       
     runScript(arguments)
     }
   }
   
+  // End script/exit app
   @IBAction func stopTask(_ sender:AnyObject) {
-    
       buildTask.terminate()
-   
   }
     
   func runScript(_ arguments:[String]) {
     
-    //1 - Reset text boxs while script is running
+    //1 - Reset input boxes while script is running
     acpiTextInput.stringValue = ""
+    debugScript = ""
     incompleteTextInput.stringValue = ""
     pcibridgeTextInput.stringValue = ""
     userInput.stringValue = ""
@@ -177,7 +176,7 @@ class TasksViewController: NSViewController {
     
     let taskQueue = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
     
-    //2.
+    //2 - Start async task output
     taskQueue.async {
       
       //1 - Attempt to locate script
@@ -212,12 +211,13 @@ class TasksViewController: NSViewController {
         
       }
       
+      //4 - Capture output
       self.captureStandardOutputAndRouteToTextView(self.buildTask)
       
-      //4.
+      //5 - Launch command script
       self.buildTask.launch()
       
-      //5.
+      //6 - Wait until script file has ended
       self.buildTask.waitUntilExit()
 
     }
@@ -246,7 +246,7 @@ class TasksViewController: NSViewController {
       DispatchQueue.main.async(execute: {
         let previousOutput = self.outputText.string ?? ""
         let nextOutput = previousOutput + "\n" + outputString
-        self.outputText.backgroundColor = NSColor(red: 249/255, green: 250/255, blue: 215/255, alpha: 1);
+        self.outputText.backgroundColor = NSColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1);
         self.outputText.string = nextOutput
         
         let range = NSRange(location:nextOutput.characters.count,length:0)
