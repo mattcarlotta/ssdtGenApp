@@ -57,30 +57,30 @@ gIaslGithub="https://raw.githubusercontent.com/mattcarlotta/ssdtGen/master/tools
 #Count to cycle thru arrays
 gCount=0
 
+#Xcode TERM needs to be defined
 export TERM=dumb
+
 #SSDT Table-ID array
 gTableID=""
 
 #Motherboad ID array
 gMoboID=('X99' 'Z170' 'MAXIMUS')
 
-#carriage return
-cr=`echo $'\n.'`
-cr=${cr%.}
+#Selected input mode
+debugScript=$1 #debug script
 
-#===============================================================================##
-## USER ABORTS SCRIPT #
-##==============================================================================##
-function _clean_up()
-{
-  clear
-  echo "Cleaning up any left-overs"
-  # remove any left over .dsl files
-  rm "${gPath}"/*.dsl 2> /dev/null
-  clear
-  echo "Script was aborted!"
-  exit -0
-}
+#buildAll or build
+buildSSDT=$2
+
+#Incomplete ACPI
+incompleteACPI=$3
+
+#Complete ACPI
+completeACPI=$4
+
+#PCI Bridge
+pciBridge=$5
+
 
 #===============================================================================##
 ## CHECK DEVICE PROPERTY SEARCH RESULTS #
@@ -793,7 +793,6 @@ function _compileSSDT
   echo "Removing: ${gSSDTID}.dsl"
   echo ''
   echo '------------------------------------------------------------------------------------------------------------------------------------------'
-  #printf '\n'
   #remove gen'd SSDT-XXXX.dsl files
   rm "$gSSDT"
 
@@ -893,7 +892,7 @@ function _checkIf_VALIDADDRESS()
 }
 
 ##===============================================================================##
-# ASK USER IF NVME IS BEHIND PCI BRIDGE #
+# CHECK IF NVME IS BEHIND PCI BRIDGE #
 ##===============================================================================##
 function _set_PCIBRIDGE()
 {
@@ -903,7 +902,7 @@ function _set_PCIBRIDGE()
 }
 
 ##===============================================================================##
-# ASK USER WHERE NVME IS LOCATED #
+# SET NVME PATH FOR COMPLETE ACPI #
 ##===============================================================================##
 function _set_COMPLETENVMEDETAILS()
 {
@@ -925,7 +924,7 @@ function _set_COMPLETENVMEDETAILS()
 }
 
 ##===============================================================================##
-# ASK USER IF NVME PATH IS INCOMPLETE #
+# SET NVME PATH FOR INCOMPLETE ACPI #
 ##===============================================================================##
 function _set_INCOMPLETENVMEDETAILS()
 {
@@ -945,7 +944,7 @@ function _set_INCOMPLETENVMEDETAILS()
 }
 
 ##===============================================================================##
-# CHECK USER CHOICES TO SSDT LIST #
+# CHECK USER INPUT TO SSDT LIST #
 ##===============================================================================##
 function _checkIf_SSDT_Exists()
 {
@@ -1025,19 +1024,21 @@ function _user_choices()
     # attempt to build one SSDT
     build* | BUILD*)
     buildOne=${choice:6:9}
-    #if NVME was selected, send them to INCOMPLETENVMEDETAILS prompt
+    #if NVME was selected...
     if [[ "$buildOne" == "NVME" ]];
       then
-      echo 'User selected NVME!'
+      echo 'User selected NVME!' /dev/null 2>&1
       gCount=0
       gTableID='NVME'
+      #if NVME is incomplete...
       if [ ! -z "$incompleteACPI" ];
         then
-          echo 'User selected incomplete NVME!'
+          echo 'User selected incomplete NVME!' /dev/null 2>&1
           _set_INCOMPLETENVMEDETAILS
+          #if NVME is complete...
         if [ ! -z "$completeACPI" ];
           then
-          echo 'User selected complete NVME!'
+          echo 'User selected complete NVME!' /dev/null 2>&1
           _set_COMPLETENVMEDETAILS
         fi
       fi
@@ -1047,7 +1048,7 @@ function _user_choices()
     fi
     exit 0
     ;;
-    # oops - user made a mistake, show display instructions
+    # oops - user made a mistake
     * )
     echo ""
     echo "*—-ERROR—-* That was not a valid option! Please try again!"
@@ -1102,21 +1103,6 @@ function main()
   _checkPreInstalled
   _user_choices
 }
-
-#Selected input mode
-debugScript=$1 #debug script
-
-#buildAll or build
-buildSSDT=$2
-
-#Incomplete ACPI
-incompleteACPI=$3
-
-#Complete ACPI
-completeACPI=$4
-
-#PCI Bridge
-pciBridge=$5
 
 if [ ! -z "$debugScript" ];
   then
