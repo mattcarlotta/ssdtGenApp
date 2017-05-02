@@ -1027,20 +1027,25 @@ function _user_choices()
     #if NVME was selected...
     if [[ "$buildOne" == "NVME" ]];
       then
-      echo 'User selected NVME!' /dev/null 2>&1
+      echo 'User selected NVME!' > /dev/null 2>&1
       gCount=0
       gTableID='NVME'
       #if NVME is incomplete...
-      if [ ! -z "$incompleteACPI" ];
+      echo 'Triggered!'
+      echo "$incompleteACPI is incompleteACPI"
+      echo "$completeACPI is completeACPI"
+      if [ ! -z "${incompleteACPI}" ];
         then
-          echo 'User selected incomplete NVME!' /dev/null 2>&1
+          echo 'IncompleteACPI'
+          echo 'User selected incomplete NVME!' > /dev/null 2>&1
           _set_INCOMPLETENVMEDETAILS
           #if NVME is complete...
-        if [ ! -z "$completeACPI" ];
-          then
-          echo 'User selected complete NVME!' /dev/null 2>&1
+      fi
+      if [ ! -z "${completeACPI}" ];
+        then
+          echo 'CompleteACPI'
+          echo 'User selected complete NVME!' > /dev/null 2>&1
           _set_COMPLETENVMEDETAILS
-        fi
       fi
       else
         _checkBoard
