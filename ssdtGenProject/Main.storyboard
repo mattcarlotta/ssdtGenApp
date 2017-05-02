@@ -1038,7 +1038,7 @@
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="Wun-98-tF5">
                                                                     <font key="font" metaFont="system"/>
-                                                                    <mutableString key="title">                                                             ssdtGen Version 0.1.7b - Copyright (c) 2017 by M.F.C. _________________________________________________________________________________________________________________________________   To build and compile all SSDTS, simply click the BuildAll button.
+                                                                    <string key="title">                                                             ssdtGen Version 0.1.7b - Copyright (c) 2017 by M.F.C. _________________________________________________________________________________________________________________________________   To build and compile all SSDTS, simply click the BuildAll button.
 
  To build and compile one SSDT, type a SSDT NAME in the blank text box and click the Build button.
 
@@ -1057,7 +1057,7 @@
       - XOSI: Adds Windows simulated support for DSDT _OSI methods.
   To terminate the script while it's running, simply press the Terminate button. 
  To debug the script, simply click the Debug button once to activate (blue=active, white=inactive):
-      - Will put the script in a debug mode that prints the output to a debug_output.txt file until the script has either          completed or has been terminated.   To exit the program at any time, simply press the Exit button. </mutableString>
+      - Will put the script in a debug mode that prints the output to a debug_output.txt file until the script has either          completed or has been terminated.   To exit the program at any time, simply press the Exit button. </string>
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
