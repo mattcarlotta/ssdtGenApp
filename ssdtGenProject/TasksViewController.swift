@@ -49,18 +49,6 @@ class TasksViewController: NSViewController {
   var completeACPI = ""
   var pciBridge = ""
 
- 
-//  override func viewDidLoad() {
-//    let pstyle = NSMutableParagraphStyle()
-//    pstyle.alignment = .left
-//    self.view.wantsLayer = true
-//    self.view.layer?.backgroundColor = CGColor(red: 66/255, green: 107/255, blue: 244/255, alpha: 1);
-//    acpiCheckBox.attributedTitle = NSAttributedString(string: "Complete ACPI", attributes: [ NSForegroundColorAttributeName : NSColor.white, NSParagraphStyleAttributeName : pstyle ])
-//    pcibridgeCheckBox.attributedTitle = NSAttributedString(string: "PCI Bridge", attributes: [ NSForegroundColorAttributeName : NSColor.white, NSParagraphStyleAttributeName : pstyle ])
-//     incompleteCheckBox.attributedTitle = NSAttributedString(string: "Incomplete ACPI", attributes: [ NSForegroundColorAttributeName : NSColor.white, NSParagraphStyleAttributeName : pstyle ])
-//    self.outputText.backgroundColor = NSColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1);
-//  }
-  
   @IBAction func toggleDebugMode(_ sender: Any) {
     if ((sender as AnyObject).state == NSOnState) {
       debugScript = "debug"
@@ -151,7 +139,7 @@ class TasksViewController: NSViewController {
       arguments.append(pciBridge)
       
     }
-      
+    //5 - Pass all args to script  
     runScript(arguments)
     }
   }
