@@ -1031,19 +1031,14 @@ function _user_choices()
       gCount=0
       gTableID='NVME'
       #if NVME is incomplete...
-      echo 'Triggered!'
-      echo "$incompleteACPI is incompleteACPI"
-      echo "$completeACPI is completeACPI"
       if [ ! -z "${incompleteACPI}" ];
         then
-          echo 'IncompleteACPI'
           echo 'User selected incomplete NVME!' > /dev/null 2>&1
           _set_INCOMPLETENVMEDETAILS
           #if NVME is complete...
       fi
       if [ ! -z "${completeACPI}" ];
         then
-          echo 'CompleteACPI'
           echo 'User selected complete NVME!' > /dev/null 2>&1
           _set_COMPLETENVMEDETAILS
       fi

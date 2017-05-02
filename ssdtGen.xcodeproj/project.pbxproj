@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6353D8AC1EB832A600496672 /* ssdtGen_16x16.png in Resources */ = {isa = PBXBuildFile; fileRef = 6353D8A51EB832A600496672 /* ssdtGen_16x16.png */; };
+		6353D8AD1EB832A600496672 /* ssdtGen_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = 6353D8A61EB832A600496672 /* ssdtGen_32x32.png */; };
+		6353D8AE1EB832A600496672 /* ssdtGen_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 6353D8A71EB832A600496672 /* ssdtGen_64x64.png */; };
+		6353D8AF1EB832A600496672 /* ssdtGen_128x128.png in Resources */ = {isa = PBXBuildFile; fileRef = 6353D8A81EB832A600496672 /* ssdtGen_128x128.png */; };
+		6353D8B01EB832A600496672 /* ssdtGen_256x256.png in Resources */ = {isa = PBXBuildFile; fileRef = 6353D8A91EB832A600496672 /* ssdtGen_256x256.png */; };
+		6353D8B11EB832A600496672 /* ssdtGen_512x512.png in Resources */ = {isa = PBXBuildFile; fileRef = 6353D8AA1EB832A600496672 /* ssdtGen_512x512.png */; };
+		6353D8B21EB832A600496672 /* ssdtGen_1024x1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 6353D8AB1EB832A600496672 /* ssdtGen_1024x1024.png */; };
 		6360BDE31EB0112900D49D20 /* ssdtGen.command in Resources */ = {isa = PBXBuildFile; fileRef = 6360BDE21EB0112900D49D20 /* ssdtGen.command */; };
 		636E02591EB806C800CFC79C /* buildAll_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 636E02491EB806C800CFC79C /* buildAll_active.png */; };
 		636E025A1EB806C800CFC79C /* buildAll_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 636E024A1EB806C800CFC79C /* buildAll_inactive.png */; };
@@ -25,7 +32,6 @@
 		636E02671EB806C800CFC79C /* terminate_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 636E02571EB806C800CFC79C /* terminate_active.png */; };
 		636E02681EB806C800CFC79C /* terminate_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 636E02581EB806C800CFC79C /* terminate_inactive.png */; };
 		636E026A1EB806EB00CFC79C /* exit_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 636E02691EB806EB00CFC79C /* exit_active.png */; };
-		636E026C1EB8073A00CFC79C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 636E026B1EB8073A00CFC79C /* Images.xcassets */; };
 		63B68C0B1EB104CF004AE620 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B68C0A1EB104CF004AE620 /* AppDelegate.swift */; };
 		63B68C0D1EB104EB004AE620 /* ssdtGen.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63B68C0C1EB104EB004AE620 /* ssdtGen.icns */; };
 		63B68C111EB14114004AE620 /* HelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B68C101EB14114004AE620 /* HelpController.swift */; };
@@ -37,6 +43,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6353D8A51EB832A600496672 /* ssdtGen_16x16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ssdtGen_16x16.png; sourceTree = "<group>"; };
+		6353D8A61EB832A600496672 /* ssdtGen_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ssdtGen_32x32.png; sourceTree = "<group>"; };
+		6353D8A71EB832A600496672 /* ssdtGen_64x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ssdtGen_64x64.png; sourceTree = "<group>"; };
+		6353D8A81EB832A600496672 /* ssdtGen_128x128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ssdtGen_128x128.png; sourceTree = "<group>"; };
+		6353D8A91EB832A600496672 /* ssdtGen_256x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ssdtGen_256x256.png; sourceTree = "<group>"; };
+		6353D8AA1EB832A600496672 /* ssdtGen_512x512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ssdtGen_512x512.png; sourceTree = "<group>"; };
+		6353D8AB1EB832A600496672 /* ssdtGen_1024x1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ssdtGen_1024x1024.png; sourceTree = "<group>"; };
 		6360BDE21EB0112900D49D20 /* ssdtGen.command */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = ssdtGen.command; sourceTree = "<group>"; };
 		636E02491EB806C800CFC79C /* buildAll_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buildAll_active.png; sourceTree = "<group>"; };
 		636E024A1EB806C800CFC79C /* buildAll_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buildAll_inactive.png; sourceTree = "<group>"; };
@@ -55,7 +68,6 @@
 		636E02571EB806C800CFC79C /* terminate_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = terminate_active.png; sourceTree = "<group>"; };
 		636E02581EB806C800CFC79C /* terminate_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = terminate_inactive.png; sourceTree = "<group>"; };
 		636E02691EB806EB00CFC79C /* exit_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit_active.png; sourceTree = "<group>"; };
-		636E026B1EB8073A00CFC79C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ssdtGen/Images.xcassets; sourceTree = "<group>"; };
 		63B68C0A1EB104CF004AE620 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63B68C0C1EB104EB004AE620 /* ssdtGen.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ssdtGen.icns; sourceTree = "<group>"; };
 		63B68C101EB14114004AE620 /* HelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpController.swift; sourceTree = "<group>"; };
@@ -86,7 +98,6 @@
 		A1818B4816FE271100684672 = {
 			isa = PBXGroup;
 			children = (
-				636E026B1EB8073A00CFC79C /* Images.xcassets */,
 				A1818B5A16FE271100684672 /* ssdtGenProject */,
 				A1818B5316FE271100684672 /* Frameworks */,
 				A1818B5216FE271100684672 /* Products */,
@@ -154,6 +165,13 @@
 				636E02561EB806C800CFC79C /* ssdtGen_Logo.png */,
 				636E02571EB806C800CFC79C /* terminate_active.png */,
 				636E02581EB806C800CFC79C /* terminate_inactive.png */,
+				6353D8A51EB832A600496672 /* ssdtGen_16x16.png */,
+				6353D8A61EB832A600496672 /* ssdtGen_32x32.png */,
+				6353D8A71EB832A600496672 /* ssdtGen_64x64.png */,
+				6353D8A81EB832A600496672 /* ssdtGen_128x128.png */,
+				6353D8A91EB832A600496672 /* ssdtGen_256x256.png */,
+				6353D8AA1EB832A600496672 /* ssdtGen_512x512.png */,
+				6353D8AB1EB832A600496672 /* ssdtGen_1024x1024.png */,
 				63B68C0C1EB104EB004AE620 /* ssdtGen.icns */,
 				63E8C7FE1EB279ED000F22DB /* ssdtGenFinal.icns */,
 				A1818B5C16FE271100684672 /* ssdtGen-Info.plist */,
@@ -222,14 +240,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				636E025C1EB806C800CFC79C /* buildOne_inactive.png in Resources */,
-				636E026C1EB8073A00CFC79C /* Images.xcassets in Resources */,
 				A1818B5F16FE271100684672 /* InfoPlist.strings in Resources */,
+				6353D8B01EB832A600496672 /* ssdtGen_256x256.png in Resources */,
 				636E02631EB806C800CFC79C /* incompleteACPI.png in Resources */,
 				636E026A1EB806EB00CFC79C /* exit_active.png in Resources */,
 				63E8C7FF1EB279ED000F22DB /* ssdtGenFinal.icns in Resources */,
 				AD0984A81C92FAC200E71620 /* Main.storyboard in Resources */,
+				6353D8AD1EB832A600496672 /* ssdtGen_32x32.png in Resources */,
+				6353D8B21EB832A600496672 /* ssdtGen_1024x1024.png in Resources */,
 				636E025B1EB806C800CFC79C /* buildOne_active.png in Resources */,
 				636E025E1EB806C800CFC79C /* debug_active.png in Resources */,
+				6353D8B11EB832A600496672 /* ssdtGen_512x512.png in Resources */,
+				6353D8AF1EB832A600496672 /* ssdtGen_128x128.png in Resources */,
+				6353D8AC1EB832A600496672 /* ssdtGen_16x16.png in Resources */,
 				636E02611EB806C800CFC79C /* help_active.png in Resources */,
 				636E02641EB806C800CFC79C /* nvmeOptions.png in Resources */,
 				636E02651EB806C800CFC79C /* pciBridge.png in Resources */,
@@ -244,6 +267,7 @@
 				636E02601EB806C800CFC79C /* exit_inactive.png in Resources */,
 				63B68C0D1EB104EB004AE620 /* ssdtGen.icns in Resources */,
 				636E025A1EB806C800CFC79C /* buildAll_inactive.png in Resources */,
+				6353D8AE1EB832A600496672 /* ssdtGen_64x64.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,7 +376,6 @@
 		A1818B6F16FE271100684672 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -372,7 +395,6 @@
 		A1818B7016FE271100684672 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
