@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Script (ssdtGen.sh) to create SSDTs for Mac OS.
+# ssdtGenApp to create SSDTs for Mac OS.
 #
-# Version 0.1.6beta - Copyright (c) 2017 by M.F.C.
+# Version 0.1.7beta - Copyright (c) 2017 by M.F.C.
 #
 # Introduction:
 #     - ssdtGen is an automated bash script that attempts to build and
@@ -1035,8 +1035,8 @@ function _user_choices()
         then
           echo 'User selected incomplete NVME!' > /dev/null 2>&1
           _set_INCOMPLETENVMEDETAILS
-          #if NVME is complete...
       fi
+      #if NVME is complete...
       if [ ! -z "${completeACPI}" ];
         then
           echo 'User selected complete NVME!' > /dev/null 2>&1
