@@ -27,7 +27,6 @@
 		636E026A1EB806EB00CFC79C /* exit_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 636E02691EB806EB00CFC79C /* exit_active.png */; };
 		63B68C0B1EB104CF004AE620 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B68C0A1EB104CF004AE620 /* AppDelegate.swift */; };
 		63B68C111EB14114004AE620 /* HelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B68C101EB14114004AE620 /* HelpController.swift */; };
-		63DDBBD81EBA64E100D7E074 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63DDBBD71EBA64E100D7E074 /* QuartzCore.framework */; };
 		63F00E121EBA5901002E5E23 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63F00E111EBA5901002E5E23 /* Images.xcassets */; };
 		A1818B5516FE271100684672 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1818B5416FE271100684672 /* Cocoa.framework */; };
 		A1818B5F16FE271100684672 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1818B5D16FE271100684672 /* InfoPlist.strings */; };
@@ -56,7 +55,6 @@
 		636E02691EB806EB00CFC79C /* exit_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit_active.png; sourceTree = "<group>"; };
 		63B68C0A1EB104CF004AE620 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63B68C101EB14114004AE620 /* HelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpController.swift; sourceTree = "<group>"; };
-		63DDBBD71EBA64E100D7E074 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		63F00E111EBA5901002E5E23 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ssdtGen/Images.xcassets; sourceTree = "<group>"; };
 		A1818B5116FE271100684672 /* ssdtGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ssdtGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1818B5416FE271100684672 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -74,7 +72,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63DDBBD81EBA64E100D7E074 /* QuartzCore.framework in Frameworks */,
 				A1818B5516FE271100684672 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,7 +102,6 @@
 		A1818B5316FE271100684672 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				63DDBBD71EBA64E100D7E074 /* QuartzCore.framework */,
 				A1818B5416FE271100684672 /* Cocoa.framework */,
 				A1818B5616FE271100684672 /* Other Frameworks */,
 			);
