@@ -5,14 +5,12 @@
 # Version 0.1.7beta - Copyright (c) 2017 by M.F.C.
 #
 # Introduction:
-#     - ssdtGen is an automated bash script that attempts to build and
-#        compile SSDTs for X99/Z170 systems running Mac OS!
-#     - Simply run the commands in the README to download and execute the
-#        ssdtGen.sh file from your Desktop.
+#     - ssdtGen is an Mac OS app that attempts to build and compile SSDTs
+#        for X99/Z170 systems running Mac OS!
 #
 #
 # Bugs:
-#     - Bug reports can be filed at: https://github.com/mattcarlotta/ssdtGen/issues
+#     - Bug reports can be filed at: https://github.com/mattcarlotta/ssdtGenApp/issues
 #        Please provide clear steps to reproduce the bug and the output of the
 #        script. Thank you!
 #
