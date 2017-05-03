@@ -655,7 +655,7 @@
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
                     <window key="window" title="ssdtGen" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
-                        <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
@@ -672,7 +672,7 @@
         <scene sceneID="hIz-AP-VOD">
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="TasksViewController" customModule="ssdtGen" sceneMemberID="viewController">
-                    <view key="view" id="hA2-e1-1uE" userLabel=" View">
+                    <view key="view" id="hA2-e1-1uE">
                         <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -1038,54 +1038,26 @@
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="Wun-98-tF5">
                                                                     <font key="font" metaFont="system"/>
-                                                                    <string key="title"> 
-                                                           ssdtGen Version 0.1.7b - Copyright (c) 2017 by M.F.C.
-_________________________________________________________________________________________________________________________________
-
- To build and compile all SSDTS, simply click the BuildAll button.
+                                                                    <string key="title">                                                             ssdtGen Version 0.1.7b - Copyright (c) 2017 by M.F.C. _________________________________________________________________________________________________________________________________   To build and compile all SSDTS, simply click the BuildAll button.
 
  To build and compile one SSDT, type a SSDT NAME in the blank text box and click the Build button.
 
            x99 | z170
          -------------
-      - ALZA | HDAS: Adds x99/z170 support for Realtek on-board sound.
-
-      - EVSS: Adds x99 support for a third PCH sSata controller for IDE, AHCI, RAID storage drives.
-
-      - GFX1: Adds x99/z170 support for a single Nvidia graphics card and adds HDMI audio support for the card as well.
-
-      - GLAN: Adds x99/z170 support for an Intel ethernet controller.
-
-      - HECI: Intel Management Engine Interface that, in general, adds support for various tasks  while the system is booting,
-         running or sleeping.
-
-      - NVME: Adds support for a single NVMe drive. MUST be used in conjuction with Rehabman's spoofed
-         HackrNVMeFamily-10_xx_x.kext.
-
-           - In order to build a NVME SSDT, select one of the checkboxes: Complete ACPI (SB.PCI0.Device.LeafNode) or
-              Incomplete ACPI (SB.PCI0.Device.Address), followed by their respective ACPI path locations (excluding SB.PCI0).
-              If you have a complete ACPI, but it's behind a PCI Bridge, then in addition to selecting and filling out the Complete
-              ACPI location, select the PCI Bridge checkbox and input its respective address location (0x0000) as well.
-
-      - LPC0 | LPCB: Adds x99/z170 support to AppleLPC.kext for Low Pin Count devices to connect to the CPU.
-
-      - SAT1 | SAT0: Adds x99/z170 support for the PCH SATA controller for SATA devices via Legacy or AHCI mode.
-
-      - SMBS | SBUS: Adds x99/z170 support for a SMBus controller that allows communication between external hardware
-         devices (for example, Apple's Mikey driver).
-
-      - XHC: Adds power options for the USB xHC Host Controller.
-
+      - ALZA | HDAS: Adds x99/z170 support for Realtek on-board sound. 
+      - EVSS: Adds x99 support for a third PCH sSata controller for IDE, AHCI, RAID storage drives. 
+      - GFX1: Adds x99/z170 support for a single Nvidia graphics card and adds HDMI audio support for the card as well. 
+      - GLAN: Adds x99/z170 support for an Intel ethernet controller. 
+      - HECI: Intel Management Engine Interface that, in general, adds support for various tasks  while the system is booting,          running or sleeping. 
+      - NVME: Adds support for a single NVMe drive. MUST be used in conjuction with Rehabman's spoofed          HackrNVMeFamily-10_xx_x.kext.             - In order to build a NVME SSDT, select one of the checkboxes: Complete ACPI (SB.PCI0.Device.LeafNode) or               Incomplete ACPI (SB.PCI0.Device.Address), followed by their respective ACPI path locations (excluding SB.PCI0).               If you have a complete ACPI, but it's behind a PCI Bridge, then in addition to selecting and filling out the Complete               ACPI location, select the PCI Bridge checkbox and input its respective address location (0x0000) as well. 
+      - LPC0 | LPCB: Adds x99/z170 support to AppleLPC.kext for Low Pin Count devices to connect to the CPU. 
+      - SAT1 | SAT0: Adds x99/z170 support for the PCH SATA controller for SATA devices via Legacy or AHCI mode. 
+      - SMBS | SBUS: Adds x99/z170 support for a SMBus controller that allows communication between external hardware          devices (for example, Apple's Mikey driver). 
+      - XHC: Adds power options for the USB xHC Host Controller. 
       - XOSI: Adds Windows simulated support for DSDT _OSI methods.
-
- To terminate the script while it's running, simply press the Terminate button.
-
+  To terminate the script while it's running, simply press the Terminate button. 
  To debug the script, simply click the Debug button once to activate (blue=active, white=inactive):
-      - Will put the script in a debug mode that prints the output to a debug_output.txt file until the script has either
-         completed or has been terminated.
-
- To exit the program at any time, simply press the Exit button.
-</string>
+      - Will put the script in a debug mode that prints the output to a debug_output.txt file until the script has either          completed or has been terminated.   To exit the program at any time, simply press the Exit button. </string>
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>

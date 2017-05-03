@@ -39,6 +39,7 @@ class TasksViewController: NSViewController {
   @IBOutlet var incompleteTextInput: NSTextField!
   @IBOutlet var terminateButton: NSButton!
   
+  
   dynamic var isRunning = false
   var outputPipe:Pipe!
   var buildTask:Process!
@@ -258,5 +259,5 @@ class TasksViewController: NSViewController {
     
   }
   
+  
 }
-
