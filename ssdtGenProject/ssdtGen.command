@@ -52,7 +52,7 @@ gUsrLocalDir="/usr/local/bin"
 gIaslLocalDir="/usr/local/bin/iasl"
 
 #Github IASL download
-gIaslGithub="https://raw.githubusercontent.com/mattcarlotta/ssdtGen/master/tools/iasl"
+gIaslGithub="https://raw.githubusercontent.com/mattcarlotta/ssdtGenApp/master/tools/iasl"
 
 #Count to cycle thru arrays
 gCount=0
