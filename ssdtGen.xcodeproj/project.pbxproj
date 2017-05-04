@@ -25,11 +25,9 @@
 		636E02671EB806C800CFC79C /* terminate_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 636E02571EB806C800CFC79C /* terminate_active.png */; };
 		636E02681EB806C800CFC79C /* terminate_inactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 636E02581EB806C800CFC79C /* terminate_inactive.png */; };
 		636E026A1EB806EB00CFC79C /* exit_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 636E02691EB806EB00CFC79C /* exit_active.png */; };
-		639F53D81EBA9A8100C9F5EF /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 639F53D71EBA9A8100C9F5EF /* Images-2.xcassets */; };
 		63B68C0B1EB104CF004AE620 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B68C0A1EB104CF004AE620 /* AppDelegate.swift */; };
-		63B68C0D1EB104EB004AE620 /* ssdtGen.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63B68C0C1EB104EB004AE620 /* ssdtGen.icns */; };
 		63B68C111EB14114004AE620 /* HelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B68C101EB14114004AE620 /* HelpController.swift */; };
-		63E8C7FF1EB279ED000F22DB /* ssdtGenFinal.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63E8C7FE1EB279ED000F22DB /* ssdtGenFinal.icns */; };
+		63E990C81EBAB5DE00CD920D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63E990C71EBAB5DE00CD920D /* Images.xcassets */; };
 		A1818B5516FE271100684672 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1818B5416FE271100684672 /* Cocoa.framework */; };
 		A1818B5F16FE271100684672 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1818B5D16FE271100684672 /* InfoPlist.strings */; };
 		AD0984A81C92FAC200E71620 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD0984A71C92FAC200E71620 /* Main.storyboard */; };
@@ -55,11 +53,9 @@
 		636E02571EB806C800CFC79C /* terminate_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = terminate_active.png; sourceTree = "<group>"; };
 		636E02581EB806C800CFC79C /* terminate_inactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = terminate_inactive.png; sourceTree = "<group>"; };
 		636E02691EB806EB00CFC79C /* exit_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit_active.png; sourceTree = "<group>"; };
-		639F53D71EBA9A8100C9F5EF /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "ssdtGen/Images-2.xcassets"; sourceTree = "<group>"; };
 		63B68C0A1EB104CF004AE620 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		63B68C0C1EB104EB004AE620 /* ssdtGen.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ssdtGen.icns; sourceTree = "<group>"; };
 		63B68C101EB14114004AE620 /* HelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpController.swift; sourceTree = "<group>"; };
-		63E8C7FE1EB279ED000F22DB /* ssdtGenFinal.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ssdtGenFinal.icns; sourceTree = "<group>"; };
+		63E990C71EBAB5DE00CD920D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ssdtGen/Images.xcassets; sourceTree = "<group>"; };
 		A1818B5116FE271100684672 /* ssdtGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ssdtGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1818B5416FE271100684672 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		A1818B5716FE271100684672 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -86,7 +82,7 @@
 		A1818B4816FE271100684672 = {
 			isa = PBXGroup;
 			children = (
-				639F53D71EBA9A8100C9F5EF /* Images-2.xcassets */,
+				63E990C71EBAB5DE00CD920D /* Images.xcassets */,
 				A1818B5A16FE271100684672 /* ssdtGenProject */,
 				A1818B5316FE271100684672 /* Frameworks */,
 				A1818B5216FE271100684672 /* Products */,
@@ -154,8 +150,6 @@
 				636E02561EB806C800CFC79C /* ssdtGen_Logo.png */,
 				636E02571EB806C800CFC79C /* terminate_active.png */,
 				636E02581EB806C800CFC79C /* terminate_inactive.png */,
-				63B68C0C1EB104EB004AE620 /* ssdtGen.icns */,
-				63E8C7FE1EB279ED000F22DB /* ssdtGenFinal.icns */,
 				A1818B5C16FE271100684672 /* ssdtGen-Info.plist */,
 				A1818B5D16FE271100684672 /* InfoPlist.strings */,
 				6360BDE21EB0112900D49D20 /* ssdtGen.command */,
@@ -222,13 +216,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				636E025C1EB806C800CFC79C /* buildOne_inactive.png in Resources */,
+				63E990C81EBAB5DE00CD920D /* Images.xcassets in Resources */,
 				A1818B5F16FE271100684672 /* InfoPlist.strings in Resources */,
 				636E02631EB806C800CFC79C /* incompleteACPI.png in Resources */,
 				636E026A1EB806EB00CFC79C /* exit_active.png in Resources */,
-				63E8C7FF1EB279ED000F22DB /* ssdtGenFinal.icns in Resources */,
 				AD0984A81C92FAC200E71620 /* Main.storyboard in Resources */,
 				636E025B1EB806C800CFC79C /* buildOne_active.png in Resources */,
-				639F53D81EBA9A8100C9F5EF /* Images-2.xcassets in Resources */,
 				636E025E1EB806C800CFC79C /* debug_active.png in Resources */,
 				636E02611EB806C800CFC79C /* help_active.png in Resources */,
 				636E02641EB806C800CFC79C /* nvmeOptions.png in Resources */,
@@ -242,7 +235,6 @@
 				636E02671EB806C800CFC79C /* terminate_active.png in Resources */,
 				636E025D1EB806C800CFC79C /* completeACPI.png in Resources */,
 				636E02601EB806C800CFC79C /* exit_inactive.png in Resources */,
-				63B68C0D1EB104EB004AE620 /* ssdtGen.icns in Resources */,
 				636E025A1EB806C800CFC79C /* buildAll_inactive.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
