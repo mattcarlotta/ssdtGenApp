@@ -14,11 +14,11 @@ Note 2: Please note that some of the devices will still need "drivers" (kexts) t
 
 You can download the latest version of ssdtGen to your Desktop by entering the following commands in a terminal window:
 ```
-cd ~/Desktop && curl -O -L https://github.com/mattcarlotta/ssdtGenApp/raw/master/ssdtGenApp.zip
+cd ~/desktop && curl -OL https://github.com/mattcarlotta/ssdtGenApp/raw/master/ssdtGen.zip
 ```
 Unzip the ssdtGenApp.zip file and double click the sddtGen.app to run it (does NOT need to be installed in the Applications folder)
 
-Go here for more support: <a href="http://www.insanelymac.com/forum/topic/322811-ssdtgen-script-for-custom-generated-ssdts-x99z170-systems/#entry2403977">ssdtGen for custom generated SSDTs (x99/z170 systems)</a>
+Go here for more support: <a href="http://www.insanelymac.com/forum/topic/322811-ssdtgen-custom-generated-ssdts-x99z170-systems/">ssdtGen - custom generated SSDTs (x99/z170 systems)</a>
 
 --------------------------------------------------------------------------------------------------------------
 

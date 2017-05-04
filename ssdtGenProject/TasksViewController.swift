@@ -48,6 +48,7 @@ class TasksViewController: NSViewController {
   var incompleteACPI = ""
   var completeACPI = ""
   var pciBridge = ""
+  var textError = ""
 
   @IBAction func toggleDebugMode(_ sender: Any) {
     if ((sender as AnyObject).state == NSOnState) {
@@ -76,6 +77,19 @@ class TasksViewController: NSViewController {
     runScript(arguments)
 
   }
+  
+  func resetBuildButtonState () {
+    self.buildButton.state = 0
+  }
+  
+  func dialogOKCancel(_ textError: String) -> Bool {
+    let myPopup: NSAlert = NSAlert()
+    myPopup.messageText = "Error"
+    myPopup.informativeText = textError
+    myPopup.alertStyle = NSAlertStyle.warning
+    myPopup.addButton(withTitle: "OK")
+    return myPopup.runModal() == NSAlertFirstButtonReturn
+  }
     
   // BuildOne button action
   @IBAction func buildOne(_ sender:AnyObject) {
@@ -100,14 +114,18 @@ class TasksViewController: NSViewController {
       
       //1 - Check to make sure either ACPI or Incomplete has been checked
       if (acpiCheckBox.state == 0 && incompleteCheckBox.state == 0 || acpiCheckBox.state == 1 &&  incompleteCheckBox.state == 1 ) {
-        outputText.string = "*—-ERROR—-* You can only select either a complete ACPI Location or Incomplete ACPI location."
+        textError = "You must select either a complete NVME ACPI Location or an Incomplete NVME ACPI location."
+        _ = dialogOKCancel(textError)
+        resetBuildButtonState()
         return
       }
       
       //2 - Check to see if Incomplete ACPI checkbox has been checked and is not empty
       if (incompleteCheckBox.state == 1) {
         if ((incompleteTextInput.stringValue).isEmpty) {
-          outputText.string = "*—-ERROR—-* You must include the Incomplete ACPI Location!"
+          textError = "You must include the Incomplete NVME ACPI Location!"
+          _ = dialogOKCancel(textError)
+          resetBuildButtonState()
           return
         } else {
           incompleteACPI = incompleteTextInput.stringValue
@@ -119,7 +137,9 @@ class TasksViewController: NSViewController {
       //3 - Check to see if ACPI checkbox has been checked and is not empty
       if (acpiCheckBox.state == 1) {
         if ((acpiTextInput.stringValue).isEmpty) {
-          outputText.string = "*—-ERROR—-* You must include the ACPI Location!"
+          textError = "You must include the ACPI NVME Location!"
+          _ = dialogOKCancel(textError)
+          resetBuildButtonState()
           return
         } else {
           completeACPI = acpiTextInput.stringValue
@@ -130,7 +150,9 @@ class TasksViewController: NSViewController {
       //4 - Check to see if PCI Bridge checkbox has been checked and is not empty
       if (pcibridgeCheckBox.state == 1) {
         if ((pcibridgeTextInput.stringValue).isEmpty) {
-          outputText.string = "*—-ERROR—-* You must include the PCI Bridge Location!"
+          textError = "You must include the PCI Bridge address location!"
+          _ = dialogOKCancel(textError)
+          resetBuildButtonState()
           return
         } else {
           pciBridge = pcibridgeTextInput.stringValue
