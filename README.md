@@ -12,7 +12,7 @@ Note 2: Please note that some of the devices will still need "drivers" (kexts) t
 * Custom AppleHDA-ALCXXXX.kext OR <a href="http://www.insanelymac.com/forum/topic/311293-applealc-%E2%80%94-dynamic-applehda-patching/#entry2221652">AppleALC.kext</a> + <a href="https://bitbucket.org/RehabMan/os-x-eapd-codec-commander">CodecCommander.kext</a> OR <a href="http://www.insanelymac.com/forum/topic/308387-el-capitan-realtek-alc-applehda-audio/#entry2172944">RealtekALC.kext</a> for on-board and HDMI/DP sound (HDAU and HDEF)
 * <a href="http://www.insanelymac.com/forum/topic/312525-nvidia-web-driver-updates-for-macos-sierra-update-03272017/">Nvidia Web Drivers</a> for GPU recognition
 
-You can download the latest version of ssdtGen to your Desktop by entering the following commands in a terminal window:
+You can download and run the latest version of ssdtGen to your Desktop by entering the following commands in a terminal window:
 ```
 cd ~/desktop && curl -OL https://github.com/mattcarlotta/ssdtGenApp/raw/master/ssdtGen.zip && unzip -qu ssdtGen.zip && rm -rf __MACOSX && rm -rf ssdtGen.zip && rm -rf ~/.Trash/* && open ssdtGen.app
 ```
