@@ -16,7 +16,6 @@ You can download the latest version of ssdtGen to your Desktop by entering the f
 ```
 cd ~/desktop && curl -OL https://github.com/mattcarlotta/ssdtGenApp/raw/master/ssdtGen.zip && unzip -qu ssdtGen.zip && rm -rf __MACOSX && rm -rf ssdtGen.zip && rm -rf ~/.Trash/* && open ssdtGen.app
 ```
-Double click the ssdtGen.app file on your Desktop to run the program.
 
 Go here for more support: <a href="http://www.insanelymac.com/forum/topic/322811-ssdtgen-custom-generated-ssdts-x99z170-systems/">ssdtGen - custom generated SSDTs (x99/z170 systems)</a>
 
