@@ -28,18 +28,24 @@ class TasksViewController: NSViewController {
   @IBOutlet var outputText:NSTextView!
   @IBOutlet var spinner:NSProgressIndicator!
   @IBOutlet var buildButton:NSButton!
-  @IBOutlet var userInput: NSTextField!
   @IBOutlet var buildAllButton: NSButton!
   @IBOutlet var debugButton: NSButton!
-  @IBOutlet var acpiCheckBox: NSButton!
-  @IBOutlet var acpiTextInput: NSTextField!
+  @IBOutlet var completeCheckBox: NSButton!
+  @IBOutlet var completeTextInput: NSTextField!
   @IBOutlet var pcibridgeCheckBox: NSButton!
   @IBOutlet var pcibridgeTextInput: NSTextField!
   @IBOutlet var incompleteCheckBox: NSButton!
   @IBOutlet var incompleteTextInput: NSTextField!
   @IBOutlet var terminateButton: NSButton!
+  @IBOutlet var ssdtList: NSPopUpButton!
+  @IBOutlet var exitButton: NSButton!
+  @IBOutlet var nvmeOptions: NSImageView!
+  @IBOutlet var nvmeBox: NSBox!
+  @IBOutlet var completeacpiImage: NSImageView!
+  @IBOutlet var pcibridgeImage: NSImageView!
+  @IBOutlet var incompleteacpiImage: NSImageView!
   
-  
+  // Set up default variables
   dynamic var isRunning = false
   var outputPipe:Pipe!
   var buildTask:Process!
@@ -49,7 +55,43 @@ class TasksViewController: NSViewController {
   var completeACPI = ""
   var pciBridge = ""
   var textError = ""
+  var SSDTs = ["ALZA", "EVSS", "GFX1", "GLAN", "HDAS", "HECI", "LPC0", "LPCB", "NVME", "SAT0", "SAT1", "SBUS", "SMBS", "XHC", "XOSI"]
+  var userSelectedSSDT = ""
 
+  func toggleNVMEBox(_ boolState: Bool ) {
+    completeacpiImage.isEnabled = boolState
+    completeCheckBox.isEnabled = boolState
+    completeTextInput.isEnabled = boolState
+    incompleteCheckBox.isEnabled = boolState
+    incompleteacpiImage.isEnabled = boolState
+    incompleteTextInput.isEnabled = boolState
+    pcibridgeImage.isEnabled = boolState
+    pcibridgeCheckBox.isEnabled = boolState
+    pcibridgeTextInput.isEnabled = boolState
+    nvmeOptions.isEnabled = boolState
+  }
+  
+  // Set up pop up button with list
+  override func viewDidLoad() {
+    ssdtList.removeAllItems()
+    ssdtList.addItems(withTitles: SSDTs)
+    ssdtList.selectItem(at: 0)
+    userSelectedSSDT = SSDTs[ssdtList.indexOfSelectedItem]
+    toggleNVMEBox(false)
+  }
+  
+  // Set buildOne SSDT and toggle NVME options on/off
+  @IBAction func selectedSSDT(_ sender: Any) {
+    userSelectedSSDT = SSDTs[ssdtList.indexOfSelectedItem]
+    
+    if (userSelectedSSDT == "NVME") {
+      toggleNVMEBox(true)
+    } else {
+      toggleNVMEBox(false)
+    }
+  }
+  
+  // Set debug mode on/off
   @IBAction func toggleDebugMode(_ sender: Any) {
     if ((sender as AnyObject).state == NSOnState) {
       debugScript = "debug"
@@ -78,10 +120,12 @@ class TasksViewController: NSViewController {
 
   }
   
+  // Reset Build button to inactive if error
   func resetBuildButtonState () {
     self.buildButton.state = 0
   }
   
+  // Pop up Error alert
   func dialogOKCancel(_ textError: String) -> Bool {
     let myPopup: NSAlert = NSAlert()
     myPopup.messageText = "Error"
@@ -94,7 +138,7 @@ class TasksViewController: NSViewController {
   // BuildOne button action
   @IBAction func buildOne(_ sender:AnyObject) {
     
-    if (userInput.stringValue).isEmpty {
+    if (userSelectedSSDT.isEmpty) {
       outputText.string = "*—-ERROR—-* Please add input before pressing build!"
     } else {
     
@@ -102,7 +146,7 @@ class TasksViewController: NSViewController {
     outputText.string = ""
       
     //2 - Set Choice Option
-    buildSSDT = ("build " + userInput.stringValue)
+    buildSSDT = ("build " + userSelectedSSDT)
     
     //3 - Set arguments to pass to script
     var arguments:[String] = []
@@ -110,10 +154,10 @@ class TasksViewController: NSViewController {
     arguments.append(buildSSDT)
     
     //4 - Check if NVME was selected
-    if (userInput.stringValue == "NVME") {
+    if (userSelectedSSDT == "NVME") {
       
       //1 - Check to make sure either ACPI or Incomplete has been checked
-      if (acpiCheckBox.state == 0 && incompleteCheckBox.state == 0 || acpiCheckBox.state == 1 &&  incompleteCheckBox.state == 1 ) {
+      if (completeCheckBox.state == 0 && incompleteCheckBox.state == 0 || completeCheckBox.state == 1 &&  incompleteCheckBox.state == 1 ) {
         textError = "You must select either a complete NVME ACPI Location or an Incomplete NVME ACPI location."
         _ = dialogOKCancel(textError)
         resetBuildButtonState()
@@ -135,14 +179,14 @@ class TasksViewController: NSViewController {
         
       
       //3 - Check to see if ACPI checkbox has been checked and is not empty
-      if (acpiCheckBox.state == 1) {
-        if ((acpiTextInput.stringValue).isEmpty) {
+      if (completeCheckBox.state == 1) {
+        if ((completeTextInput.stringValue).isEmpty) {
           textError = "You must include the ACPI NVME Location!"
           _ = dialogOKCancel(textError)
           resetBuildButtonState()
           return
         } else {
-          completeACPI = acpiTextInput.stringValue
+          completeACPI = completeTextInput.stringValue
         }
       }
       arguments.append(completeACPI)
@@ -170,24 +214,23 @@ class TasksViewController: NSViewController {
   @IBAction func stopTask(_ sender:AnyObject) {
       buildTask.terminate()
   }
-    
+  
+  // Run ssdtGen.command script
   func runScript(_ arguments:[String]) {
     
     //1 - Reset input boxes while script is running
-    acpiTextInput.stringValue = ""
+    completeTextInput.stringValue = ""
     debugScript = ""
     incompleteTextInput.stringValue = ""
     pcibridgeTextInput.stringValue = ""
-    userInput.stringValue = ""
     
     //2 - Disable buttons while script is running
-    acpiCheckBox.isEnabled = false
     buildButton.isEnabled = false
     buildAllButton.isEnabled = false
     debugButton.isEnabled = false
-    incompleteCheckBox.isEnabled = false
-    pcibridgeCheckBox.isEnabled = false
+    ssdtList.isEnabled = false
     spinner.startAnimation(self)
+    toggleNVMEBox(false)
     
     isRunning = true
     
@@ -207,23 +250,22 @@ class TasksViewController: NSViewController {
       self.buildTask.launchPath = path
       self.buildTask.arguments = arguments
       
-      //3 - Enable buttons after output has terminated
+      //3 - Enable or disable buttons after output has terminated
       self.buildTask.terminationHandler = {
         
         task in
         DispatchQueue.main.async(execute: {
-          self.acpiCheckBox.state = 0
-          self.acpiCheckBox.isEnabled = true
+          self.completeCheckBox.state = 0
           self.incompleteCheckBox.state = 0
-          self.incompleteCheckBox.isEnabled = true
           self.pcibridgeCheckBox.state = 0
-          self.pcibridgeCheckBox.isEnabled = true
           self.buildButton.state = 0
           self.buildButton.isEnabled = true
           self.debugButton.state = 0
           self.debugButton.isEnabled = true
           self.buildAllButton.state = 0
           self.buildAllButton.isEnabled = true
+          self.ssdtList.isEnabled = true
+          self.ssdtList.selectItem(at: 0)
           self.spinner.stopAnimation(self)
           self.isRunning = false
         })

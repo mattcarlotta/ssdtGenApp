@@ -2,7 +2,7 @@
 #
 # ssdtGenApp to create SSDTs for Mac OS.
 #
-# Version 0.1.7beta - Copyright (c) 2017 by M.F.C.
+# Version 0.1.8beta - Copyright (c) 2017 by M.F.C.
 #
 # Introduction:
 #     - ssdtGen is an Mac OS app that attempts to build and compile SSDTs
@@ -959,7 +959,7 @@ function _checkIf_SSDT_Exists()
     fi
   done
 
-  echo "*—-ERROR—-* $buildOne is not a SSDT! Please try again!"
+  echo "*—-ERROR—-* $buildOne is not a SSDT for your motherboard! Please try again!"
 }
 
 #===============================================================================##

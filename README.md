@@ -1,4 +1,4 @@
-# ssdtGenApp 0.1.7beta
+# ssdtGenApp 0.1.8beta
 
 Introduction
 
