@@ -10,9 +10,9 @@ import Cocoa
 
 class HelpController: NSViewController {
 
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-  }
+//  required init?(coder: NSCoder) {
+//    super.init(coder: coder)
+//  }
     @IBOutlet var helpOutput: NSScrollView!
     
     @IBAction func dismiss(_ sender: Any) {

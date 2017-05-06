@@ -58,6 +58,7 @@ class TasksViewController: NSViewController {
   var SSDTs = ["ALZA", "EVSS", "GFX1", "GLAN", "HDAS", "HECI", "LPC0", "LPCB", "NVME", "SAT0", "SAT1", "SBUS", "SMBS", "XHC", "XOSI"]
   var userSelectedSSDT = ""
 
+  // Toggles NVME Options on/off
   func toggleNVMEBox(_ boolState: Bool ) {
     completeacpiImage.isEnabled = boolState
     completeCheckBox.isEnabled = boolState
@@ -71,12 +72,14 @@ class TasksViewController: NSViewController {
     nvmeOptions.isEnabled = boolState
   }
   
+  // Sets a borderless window and allows it to be moveable
   override func viewDidAppear() {
     super.viewDidAppear()
 
     self.view.window?.styleMask.insert(.fullSizeContentView)   
     self.view.window?.titleVisibility = NSWindowTitleVisibility.hidden;
     self.view.window?.titlebarAppearsTransparent = true;
+    //self.view.window?.isMovableByWindowBackground = true;
   }
   
   // Set up pop up button with list

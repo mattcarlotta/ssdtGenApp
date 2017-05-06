@@ -2,7 +2,7 @@
 #
 # ssdtGenApp to create SSDTs for Mac OS.
 #
-# Version 0.1.8beta - Copyright (c) 2017 by M.F.C.
+# Version 0.1.9beta - Copyright (c) 2017 by M.F.C.
 #
 # Introduction:
 #     - ssdtGen is an Mac OS app that attempts to build and compile SSDTs
@@ -983,7 +983,7 @@ function _findMoboID()
   #moboID=$(ioreg -n FakeSMCKeyStore -k product-name | grep product-name | sed -e 's/ *["|=:/_@-]//g; s/productname//g' | grep -o $mobo)
 
   #find user's motherboard
-  moboID=$(ioreg -lw0 -p IODeviceTree | awk '/OEMBoard/ {print $4}' | grep -o ${gMoboID[$i]})
+  moboID=$(ioreg -lw0 -p IODeviceTree | grep OEMBoard |sed -e 's/ *[<>"|=:/_@-]//g; s/OEMBoard//g' | grep -o ${gMoboID[$i]})
 }
 
 #===============================================================================##
