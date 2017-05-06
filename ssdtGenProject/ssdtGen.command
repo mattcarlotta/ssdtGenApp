@@ -497,31 +497,37 @@ function _findDevice_Address()
 function _getExtDevice_NVME
 {
   #user speccified NVMEDEVICE (BR1B,PEG0,RP04,etc)
-  echo '    External ('${gExtDSDTPath}'.'${NVMEDEVICE}', DeviceObj)'                      >> "$gSSDT"
+  echo '    External ('${SB_PCI_SLOT}'.'${NVMEDEVICE}', DeviceObj)'                      >> "$gSSDT"
 
   #search for any D0xx devices located within NVMEDEVICE's tree
   FOUNDD0xx=$(ioreg -p IODeviceTree -n "$NVMEDEVICE" -r | grep D0 | sed -e 's/ *["+|=<a-z>:/_@-]//g; s/^ *//g' | cut -c1-4 | sed '$!N;s/\n/ /')
 
+  #search for any PXSX devices located within NVMEDEVICE's tree
+  if [[ "$NVMELEAFNODE" != "PXSX" ]];
+    then
+      FOUNDPXSX=$(ioreg -p IODeviceTree -n "$NVMEDEVICE" -r | grep PXSX | sed -e 's/ *["+|=<a-z>:/_@-]//g; s/^ *//g' | cut -c1-4 | sed '$!N;s/\n/ /')
+  fi
+
   #if INCOMPLETENVMEPATH is empty...
   if [ -z "$INCOMPLETENVMEPATH" ];
     then
-      #combine BR1B.H000, BR1B.D075, BR1B.D081 for removal
-      extDEVICES=($NVMELEAFNODE $FOUNDD0xx)
+      #combine BR1B.H000, BR1B.D075, BR1B.D081 BR1B.PXSX for removal
+      extDEVICES=($NVMELEAFNODE $FOUNDD0xx $FOUNDPXSX)
     else
       #otherwise, only D0xx devices will be removed
-      extDEVICES=($FOUNDD0xx)
+      extDEVICES=($FOUNDD0xx $FOUNDPXSX)
   fi
 
   #loop through extDEVICES, set an External reference, then remove it
   for((i=0;i<${#extDEVICES[@]};i++))
   do
-    echo '    External ('${gExtDSDTPath}'.'${NVMEDEVICE}'.'${extDEVICES[$i]}', DeviceObj)'>> "$gSSDT"
-    echo '    Scope ('${gExtDSDTPath}'.'${NVMEDEVICE}'.'${extDEVICES[$i]}')'              >> "$gSSDT"
+    echo '    External ('${SB_PCI_SLOT}'.'${NVMEDEVICE}'.'${extDEVICES[$i]}', DeviceObj)'>> "$gSSDT"
+    echo '    Scope ('${SB_PCI_SLOT}'.'${NVMEDEVICE}'.'${extDEVICES[$i]}')'              >> "$gSSDT"
     echo '    {Name (_STA, Zero)}'                                                        >> "$gSSDT"
   done
 
   #set NVME device scope (SB.PCI0.XXXX) and then NVME device
-  echo '    Scope ('${gExtDSDTPath}'.'${NVMEDEVICE}')'                                    >> "$gSSDT"
+  echo '    Scope ('${SB_PCI_SLOT}'.'${NVMEDEVICE}')'                                    >> "$gSSDT"
   echo '    {'                                                                            >> "$gSSDT"
   echo '        Device (NVME)'                                                            >> "$gSSDT"
   echo '        {'                                                                        >> "$gSSDT"
@@ -533,7 +539,7 @@ function _getExtDevice_NVME
       echo '            Name (_ADR, Zero)'                                                >> "$gSSDT"
     else
       #NVME HAS AN INCOMPLETE ACPI
-      echo '            Name (_ADR, '$NVME_ACPI_ADRESSS')'                                >> "$gSSDT"
+      echo '            Name (_ADR, '$NVME_ACPI_ADDRESS')'                                >> "$gSSDT"
   fi
 
   #if user specified BRIDGEADDRESS is not empty, create a new PCIB device w/ address
@@ -790,7 +796,7 @@ function _compileSSDT
   iasl -G "$gSSDT"
   echo "Removing: ${gSSDTID}.dsl"
   echo ''
-  echo '------------------------------------------------------------------------------------------------------------------------------------------'
+  echo '----------------------------------------------------------------------------------------------------------------------------------------------'
   #remove gen'd SSDT-XXXX.dsl files
   rm "$gSSDT"
 
@@ -879,8 +885,8 @@ function _checkIf_VALIDADDRESS()
         exit 0
       fi
     else
-      #if NVME_ACPI_ADRESSS is not at least "0x" or is <= 2, then show error, then send back to prompt
-      if [[ "$NVME_ACPI_ADRESSS" != 0x* ]] || [[ "${#NVME_ACPI_ADRESSS}" -le 2 ]];
+      #if NVME_ACPI_ADDRESS is not at least "0x" or is <= 2, then show error, then send back to prompt
+      if [[ "$NVME_ACPI_ADDRESS" != 0x* ]] || [[ "${#NVME_ACPI_ADDRESS}" -le 2 ]];
         then
         echo ''
         echo "*—-ERROR—-* You must include a valid ACPI address! Try again"
@@ -905,8 +911,9 @@ function _set_PCIBRIDGE()
 function _set_COMPLETENVMEDETAILS()
 {
   NVME_ACPI_PATH=$completeACPI #full ACPI path
-  NVMEDEVICE=${completeACPI:0:4} #device path (BR1B)
-  NVMELEAFNODE=${completeACPI:5:4} #leafnode (H000)
+  SB_PCI_SLOT="_SB_.${completeACPI:0:4}"
+  NVMEDEVICE=${completeACPI:5:4} #device path (BR1B)
+  NVMELEAFNODE=${completeACPI:10:4} #leafnode (H000)
   #make sure the ACPI path exists
   _checkIf_PATH_Exists
   #if it does exist, send them to PCI bridge prompt
@@ -927,10 +934,16 @@ function _set_COMPLETENVMEDETAILS()
 function _set_INCOMPLETENVMEDETAILS()
 {
   #user specified device and address
-  NVME_ACPI_PATH=${incompleteACPI:0:4} #device (BR1B)
-  NVME_ACPI_ADRESSS=${incompleteACPI:5:10} #address (0x8000)
+  SB_PCI_SLOT="_SB_.${incompleteACPI:0:4}"
+  NVME_ACPI_PATH=${incompleteACPI:5:4} #device (BR1B)
+  NVME_ACPI_ADDRESS=${incompleteACPI:10:8} #address (0x8000)
   INCOMPLETENVMEPATH=$NVME_ACPI_PATH #device (BR1B) used for checking against
   NVMEDEVICE=$NVME_ACPI_PATH #device (BR1B) used for checking against
+
+  echo "$gExtDSDTPath is gExtDSDTPath"
+  echo "$NVME_ACPI_PATH is NVME_ACPI_PATH"
+  echo "$NVME_ACPI_ADDRESS is NVME_ACPI_ADDRESS"
+
   #check if NVME device address is in the correct syntax
   _checkIf_VALIDADDRESS
   #make sure the ACPI path exists

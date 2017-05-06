@@ -71,6 +71,14 @@ class TasksViewController: NSViewController {
     nvmeOptions.isEnabled = boolState
   }
   
+  override func viewDidAppear() {
+    super.viewDidAppear()
+
+    self.view.window?.styleMask.insert(.fullSizeContentView)   
+    self.view.window?.titleVisibility = NSWindowTitleVisibility.hidden;
+    self.view.window?.titlebarAppearsTransparent = true;
+  }
+  
   // Set up pop up button with list
   override func viewDidLoad() {
     ssdtList.removeAllItems()
