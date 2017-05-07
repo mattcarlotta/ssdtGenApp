@@ -50,7 +50,7 @@ gUsrLocalDir="/usr/local/bin"
 gIaslLocalDir="/usr/local/bin/iasl"
 
 #Github IASL download
-gIaslGithub="https://raw.githubusercontent.com/mattcarlotta/ssdtGenApp/master/tools/iasl"
+gIaslGithub="https://github.com/mattcarlotta/ssdtGenApp/raw/master/tools/iasl.zip"
 
 #Count to cycle thru arrays
 gCount=0
@@ -1081,28 +1081,34 @@ function _checkPreInstalled()
     else
       echo "*—-ERROR—-*IASL64 isn't installed in the either $gIaslRootDir nor your $gIaslLocalDir directory!"
       echo ""
-      echo "Attempting to download IASL from Github..."
+      echo "Please open a Terminal window and run these commands to install IASL: "
+      echo "1.) cd ~/Desktop && curl -OL https://github.com/mattcarlotta/ssdtGenApp/raw/master/tools/iasl.zip"
+      echo "2.) unzip -qu iasl.zip && sudo cp iasl /usr/bin && rm iasl.zip && rm iasl"
+      exit 0
+      # echo ""
+      # echo "Attempting to download IASL from Github..."
       #check to see if usr/local/bin exists
-      if [ ! -d "$gUsrLocalDir" ];
-        then
-          echo "$gUsrLocalDir doesn't exist. Creating directory!"
-          mkdir -p $gUsrLocalDir
-        else
-          echo "$gUsrLocalDir already exists" > /dev/null 2>&1
-      fi
-      #download pre-compiled IASL if not installed
-      curl -o $gIaslLocalDir $gIaslGithub
-      if [[ $? -ne 0 ]];
-        then
-          echo ''
-          echo "*—-ERROR—-*Make sure your network connection is active!"
-          exit 1
-      fi
-      #change the IASL file to be executeable
-      chmod +x $gIaslLocalDir
-      echo ""
-      echo "MaciASL has been installed!"
-      echo ""
+      # if [ ! -d "$gUsrLocalDir" ];
+      #   then
+      #     echo "$gUsrLocalDir doesn't exist. Creating directory!"
+      #     mkdir -p $gUsrLocalDir
+      #   else
+      #     echo "$gUsrLocalDir already exists" > /dev/null 2>&1
+      # fi
+      # #download pre-compiled IASL if not installed
+      #
+      # if [[ $? -ne 0 ]];
+      #   then
+      #     echo ''
+      #     echo "*—-ERROR—-*Make sure your network connection is active!"
+      #     exit 1
+      # fi
+      #
+      # #change the IASL file to be executeable
+      # chmod +x $gIaslLocalDir
+      # echo ""
+      # echo "MaciASL has been installed!"
+      # echo ""
   fi
 }
 
