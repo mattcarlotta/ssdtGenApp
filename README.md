@@ -17,7 +17,7 @@ You can download the latest version of ssdtGen to your Desktop by entering the f
 cd ~/desktop && curl -OL https://github.com/mattcarlotta/ssdtGenApp/raw/master/ssdtGen.zip && unzip -qu ssdtGen.zip && rm -rf __MACOSX && rm -rf ssdtGen.zip
 ```
 
-You must initially run the program as a ROOT user, otherwise you may receive a permission error (after IASL has been installed, double clicking the ssdtGen.app will suffice). Enter the following command in a terminal window to run ssdtGen.app as a ROOT user:
+You must initially run the ssdtGen as a ROOT user otherwise you may receive an error when attempting to install IASL (after IASL has been installed, double clicking the ssdtGen.app will suffice). Enter the following command in a terminal window to run ssdtGen.app as a ROOT user:
 ```
 sudo $HOME/Desktop/ssdtGen.app/Contents/MacOS/ssdtGen
 ```
@@ -30,7 +30,7 @@ Go here for more support: <a href="http://www.insanelymac.com/forum/topic/322811
 
 * DSDT ACPI tables must be vanilla(†). If any devices are renamed, forget about it. Won't work.
 * Clover DSDT "fixes" (like addHDMI/fixSBUS) will interfere with SSDT injection. Do not use.
-* This app will install IASL to the usr/local/bin directory if it's missing from usr/bin or usr/local/bin
+* This app will install IASL to the usr/bin directory if it's missing (requires ROOT privileges)
 * Piker-Alpha's <a href="https://github.com/Piker-Alpha/ssdtPRGen.sh">ssdtPRgen</a> is still required if you wish to have CPU power management
 * This app currently only supports 1 connected (external) GPU. If you have or are using the IGPU (Intel's
 internal GPU located on the CPU die), then GPU injection won't work. Also, if you have multiple external
