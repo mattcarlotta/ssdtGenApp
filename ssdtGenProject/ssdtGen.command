@@ -43,18 +43,8 @@ gUSER=$(stat -f%Su /dev/console)
 #IASL root compiler directory
 gIaslRootDir="/usr/bin/iasl"
 
-#IASL local directory
-gUsrLocalDir="/usr/local/bin"
-
-#IASL local compiler directory
-gIaslLocalDir="/usr/local/bin/iasl"
-
-gIASLDir="$HOME/Desktop/ssdtGen/Contents/Resources/"
-
-gIASL="$HOME/Desktop/ssdtGen/Contents/Resources/iasl"
-
 #Github IASL download
-gIaslGithub="https://github.com/mattcarlotta/ssdtGenApp/raw/master/tools/iasl.zip"
+gIaslGithub="https://raw.githubusercontent.com/mattcarlotta/ssdtGenApp/master/tools/iasl"
 
 #Count to cycle thru arrays
 gCount=0
@@ -99,8 +89,7 @@ function _checkDevice_Prop()
   #if device search result is empty, display not found error
   if [ -z "$SSDT_VALUE" ]
     then
-      echo "*—-ERROR—-* There was a problem locating $SSDT_DEVICE's $SSDT_PROP property!"
-      echo "Please run this script in debug mode to generate a debug text file."
+      echo "—-ERROR—- There was a problem locating $SSDT_DEVICE's $SSDT_PROP property!"
   fi
 }
 
@@ -798,9 +787,15 @@ function _compileSSDT
   echo "Attemping to compile: ${gSSDTID}.dsl"
   #attempt to compile gen'd SSDTs
   iasl -G "$gSSDT"
+  if [[ $? -ne 0 ]];
+    then
+      echo ""
+      echo "—-ERROR—- SSDT-$SSDT.dsl has failed to compile!"
+      echo "Please run this script in debug mode to generate a debug_output text file."
+      echo ""
+  fi
   echo "Removing: ${gSSDTID}.dsl"
-  echo ''
-  echo '----------------------------------------------------------------------------------------------------------------------------------------------'
+  echo '---------------------------------------------------------------------------------------------------------------------------------------------'
   #remove gen'd SSDT-XXXX.dsl files
   rm "$gSSDT"
 
@@ -858,13 +853,13 @@ function _checkIf_PATH_Exists()
       if [ -z "$INCOMPLETENVMEPATH" ];
         then
           echo ''
-          echo "*—-ERROR—-*There was a problem locating $NVMEDEVICE's leafnode ($NVMELEAFNODE)!"
+          echo "—-ERROR—- There was a problem locating $NVMEDEVICE's leafnode ($NVMELEAFNODE)!"
           echo "Please make sure the ACPI path submitted is correct!"
           exit 0
       else
         #otherwise, display INCOMPLETENVMEPATH error
         echo ''
-        echo "*—-ERROR—-* There was a problem locating $INCOMPLETENVMEPATH!"
+        echo "—-ERROR—- There was a problem locating $INCOMPLETENVMEPATH!"
         echo "Please make sure the ACPI path submitted is correct!"
         exit 0
     fi
@@ -885,7 +880,7 @@ function _checkIf_VALIDADDRESS()
       if [[ "$BRIDGEADDRESS" != 0x* ]] || [[ "${#BRIDGEADDRESS}" -le 2 ]] ;
         then
         echo ''
-        echo "*—-ERROR—-* You must include a valid PCI Bridge address! Try again"
+        echo "—-ERROR—- You must include a valid PCI Bridge address! Try again"
         exit 0
       fi
     else
@@ -893,7 +888,7 @@ function _checkIf_VALIDADDRESS()
       if [[ "$NVME_ACPI_ADDRESS" != 0x* ]] || [[ "${#NVME_ACPI_ADDRESS}" -le 2 ]];
         then
         echo ''
-        echo "*—-ERROR—-* You must include a valid ACPI address! Try again"
+        echo "—-ERROR—- You must include a valid ACPI address! Try again"
         exit 0
       fi
   fi
@@ -976,7 +971,7 @@ function _checkIf_SSDT_Exists()
     fi
   done
 
-  echo "*—-ERROR—-* $buildOne is not a SSDT for your motherboard! Please try again!"
+  echo "—-ERROR—- $buildOne is not a SSDT for your motherboard! Please try again!"
 }
 
 #===============================================================================##
@@ -1017,7 +1012,7 @@ function _checkBoard
   else
     #if moboID doesn't match, display error, exit script
     echo ""
-    echo "*—-ERROR—-*This script only supports X99/Z170 motherboards at the moment!"
+    echo "—-ERROR—- This script only supports X99/Z170 motherboards at the moment!"
     echo ""
     exit 0
   fi
@@ -1066,7 +1061,7 @@ function _user_choices()
     # oops - user made a mistake
     * )
     echo ""
-    echo "*—-ERROR—-* That was not a valid option! Please try again!"
+    echo "—-ERROR—- That was not a valid option! Please try again!"
     echo ""
     exit 0
     ;;
@@ -1079,37 +1074,24 @@ function _user_choices()
 function _checkPreInstalled()
 {
   #check to see if IASL is installed in usr/bin or usr/local/bin
-  if [ -f "$gIaslRootDir" ] || [ -f "$gIaslLocalDir" ];
+  if [ -f "$gIaslRootDir" ];
     then
       echo 'IASL64 is already installed!' > /dev/null 2>&1
     else
-      echo "*—-ERROR—-*IASL64 isn't installed in the either $gIaslRootDir nor your $gIaslLocalDir directory!"
+      echo "—-ERROR—- IASL64 isn't installed in your $gIaslRootDir directory!"
       echo ""
       echo "Attempting to download IASL from Github..."
-      #check to see if usr/local/bin exists
-      if [ ! -d "$gUsrLocalDir" ];
-        then
-          echo "$gUsrLocalDir doesn't exist. Creating directory!"
-          mkdir -p $gUsrLocalDir
-        else
-          echo "$gUsrLocalDir already exists" > /dev/null 2>&1
-      fi
       #download pre-compiled IASL if not installed
-      curl -o "$gIaslRootDir.zip" $gIaslGithub
+      curl -o $gIaslRootDir $gIaslGithub
       if [[ $? -ne 0 ]];
         then
-          echo ''
-          echo "*—-ERROR—-* Make sure you initially run the program as ROOT (sudo), and/or that your network connection is active!"
+          echo "—-ERROR—- Make sure you initially run the program as ROOT (sudo), and/or that your network connection"
+          echo "is active!"
           exit 1
       fi
-      unzip -qu "$gIaslRootDir.zip"
-      rm "$gIaslRootDir.zip"
       #change the IASL file to be executeable
       chmod +x $gIaslRootDir
-      echo ""
-      echo "MaciASL has been installed!"
-      echo ""
-      exit 0
+      echo "—-SUCCESS—- MaciASL has been installed!"
   fi
 }
 

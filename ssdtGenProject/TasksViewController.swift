@@ -240,6 +240,7 @@ class TasksViewController: NSViewController {
     buildAllButton.isEnabled = false
     debugButton.isEnabled = false
     ssdtList.isEnabled = false
+    exitButton.isEnabled = false
     spinner.startAnimation(self)
     toggleNVMEBox(false)
     
@@ -276,6 +277,7 @@ class TasksViewController: NSViewController {
           self.buildAllButton.state = 0
           self.buildAllButton.isEnabled = true
           self.ssdtList.isEnabled = true
+          self.exitButton.isEnabled = true
           self.ssdtList.selectItem(at: 0)
           self.spinner.stopAnimation(self)
           self.isRunning = false
