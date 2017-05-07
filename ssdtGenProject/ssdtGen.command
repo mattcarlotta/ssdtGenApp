@@ -2,7 +2,7 @@
 #
 # ssdtGenApp to create SSDTs for Mac OS.
 #
-# Version 0.1.9beta - Copyright (c) 2017 by M.F.C.
+# Version 0.2.0beta - Copyright (c) 2017 by M.F.C.
 #
 # Introduction:
 #     - ssdtGen is an Mac OS app that attempts to build and compile SSDTs
@@ -792,6 +792,10 @@ function _compileSSDT
       echo ""
       echo "—-ERROR—- SSDT-$SSDT.dsl has failed to compile!"
       echo "Please run this script in debug mode to generate a debug_output text file."
+      echo ""
+    else
+      echo ""
+      echo "—-SUCCESS—- SSDT-$SSDT.aml was created!"
       echo ""
   fi
   echo "Removing: ${gSSDTID}.dsl"

@@ -1,4 +1,4 @@
-# ssdtGenApp 0.1.9beta
+# ssdtGenApp 0.2.0beta
 
 Introduction
 
@@ -12,9 +12,14 @@ Note 2: Please note that some of the devices will still need "drivers" (kexts) t
 * Custom AppleHDA-ALCXXXX.kext OR <a href="http://www.insanelymac.com/forum/topic/311293-applealc-%E2%80%94-dynamic-applehda-patching/#entry2221652">AppleALC.kext</a> + <a href="https://bitbucket.org/RehabMan/os-x-eapd-codec-commander">CodecCommander.kext</a> OR <a href="http://www.insanelymac.com/forum/topic/308387-el-capitan-realtek-alc-applehda-audio/#entry2172944">RealtekALC.kext</a> for on-board and HDMI/DP sound (HDAU and HDEF)
 * <a href="http://www.insanelymac.com/forum/topic/312525-nvidia-web-driver-updates-for-macos-sierra-update-03272017/">Nvidia Web Drivers</a> for GPU recognition
 
-You can download and run the latest version of ssdtGen by entering the following commands in a terminal window:
+You can download the latest version of ssdtGen to your Desktop by entering the following commands in a terminal window:
 ```
-cd ~/desktop && curl -OL https://github.com/mattcarlotta/ssdtGenApp/raw/master/ssdtGen.zip && unzip -qu ssdtGen.zip && rm -rf __MACOSX && rm -rf ssdtGen.zip && rm -rf ~/.Trash/* && open ssdtGen.app
+cd ~/desktop && curl -OL https://github.com/mattcarlotta/ssdtGenApp/raw/master/ssdtGen.zip && unzip -qu ssdtGen.zip && rm -rf __MACOSX && rm -rf ssdtGen.zip
+```
+
+You must initially run the program as a ROOT user, otherwise you may receive a permission error (after IASL has been installed, double clicking the ssdtGen.app will suffice). Enter the following command in a terminal window to run ssdtGen.app as a ROOT user:
+```
+sudo $HOME/Desktop/ssdtGen.app/Contents/MacOS/ssdtGen
 ```
 
 Go here for more support: <a href="http://www.insanelymac.com/forum/topic/322811-ssdtgen-custom-generated-ssdts-x99z170-systems/">ssdtGen - custom generated SSDTs (x99/z170 systems)</a>
