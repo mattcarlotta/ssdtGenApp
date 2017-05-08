@@ -2,7 +2,7 @@
 #
 # ssdtGenApp to create SSDTs for Mac OS.
 #
-# Version 0.2.0beta - Copyright (c) 2017 by M.F.C.
+# Version 0.2.1beta - Copyright (c) 2017 by M.F.C.
 #
 # Introduction:
 #     - ssdtGen is an Mac OS app that attempts to build and compile SSDTs

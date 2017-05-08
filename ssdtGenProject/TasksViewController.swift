@@ -39,11 +39,11 @@ class TasksViewController: NSViewController {
   @IBOutlet var terminateButton: NSButton!
   @IBOutlet var ssdtList: NSPopUpButton!
   @IBOutlet var exitButton: NSButton!
-  @IBOutlet var nvmeOptions: NSImageView!
+  @IBOutlet var nvmeOptionsLabel: NSTextField!
   @IBOutlet var nvmeBox: NSBox!
-  @IBOutlet var completeacpiImage: NSImageView!
-  @IBOutlet var pcibridgeImage: NSImageView!
-  @IBOutlet var incompleteacpiImage: NSImageView!
+  @IBOutlet var completeacpiLabel: NSTextField!
+  @IBOutlet var pcibridgeLabel: NSTextField!
+  @IBOutlet var incompleteacpiLabel: NSTextField!
   
   // Set up default variables
   dynamic var isRunning = false
@@ -57,52 +57,64 @@ class TasksViewController: NSViewController {
   var textError = ""
   var SSDTs = ["ALZA", "EVSS", "GFX1", "GLAN", "HDAS", "HECI", "LPC0", "LPCB", "NVME", "SAT0", "SAT1", "SBUS", "SMBS", "XHC", "XOSI"]
   var userSelectedSSDT = ""
+  var whiteText = NSColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+  var greyText = NSColor(red: 152/255, green: 152/255, blue: 152/255, alpha: 1)
 
   // Toggles NVME Options on/off
   func toggleNVMEBox(_ boolState: Bool ) {
-    completeacpiImage.isEnabled = boolState
     completeCheckBox.isEnabled = boolState
     completeTextInput.isEnabled = boolState
     incompleteCheckBox.isEnabled = boolState
-    incompleteacpiImage.isEnabled = boolState
     incompleteTextInput.isEnabled = boolState
-    pcibridgeImage.isEnabled = boolState
     pcibridgeCheckBox.isEnabled = boolState
     pcibridgeTextInput.isEnabled = boolState
-    nvmeOptions.isEnabled = boolState
+  }
+  
+  // Toggles NVME colors off: grey or on: white
+  func toggleNVMETextColor (_ labelTextColor:NSColor) {
+    completeacpiLabel.textColor = labelTextColor
+    completeTextInput.backgroundColor = labelTextColor
+    incompleteacpiLabel.textColor = labelTextColor
+    incompleteTextInput.backgroundColor = labelTextColor
+    pcibridgeLabel.textColor = labelTextColor
+    pcibridgeTextInput.backgroundColor = labelTextColor
+    nvmeOptionsLabel.textColor = labelTextColor
   }
   
   // Sets a borderless window and allows it to be moveable
   override func viewDidAppear() {
     super.viewDidAppear()
-
-    self.view.window?.styleMask.insert(.fullSizeContentView)   
+    self.view.window?.isMovable = true
+    self.view.window?.isMovableByWindowBackground=true
+    self.view.window?.styleMask.insert(.fullSizeContentView)
     self.view.window?.titleVisibility = NSWindowTitleVisibility.hidden;
     self.view.window?.titlebarAppearsTransparent = true;
-    //self.view.window?.isMovableByWindowBackground = true;
   }
   
-  // Set up pop up button with list
+  // Sets up pop up button with list
   override func viewDidLoad() {
     ssdtList.removeAllItems()
     ssdtList.addItems(withTitles: SSDTs)
     ssdtList.selectItem(at: 0)
     userSelectedSSDT = SSDTs[ssdtList.indexOfSelectedItem]
     toggleNVMEBox(false)
+    toggleNVMETextColor(greyText)
   }
   
-  // Set buildOne SSDT and toggle NVME options on/off
+  // Sets buildOne SSDT and toggle NVME options on/off
   @IBAction func selectedSSDT(_ sender: Any) {
     userSelectedSSDT = SSDTs[ssdtList.indexOfSelectedItem]
     
     if (userSelectedSSDT == "NVME") {
       toggleNVMEBox(true)
+      toggleNVMETextColor(whiteText)
     } else {
       toggleNVMEBox(false)
+      toggleNVMETextColor(greyText)
     }
   }
   
-  // Set debug mode on/off
+  // Sets debug mode on/off
   @IBAction func toggleDebugMode(_ sender: Any) {
     if ((sender as AnyObject).state == NSOnState) {
       debugScript = "debug"
@@ -131,12 +143,12 @@ class TasksViewController: NSViewController {
 
   }
   
-  // Reset Build button to inactive if error
+  // Resets Build button to inactive if error
   func resetBuildButtonState () {
     self.buildButton.state = 0
   }
   
-  // Pop up Error alert
+  // Pops up Error alert
   func dialogOKCancel(_ textError: String) -> Bool {
     let myPopup: NSAlert = NSAlert()
     myPopup.messageText = "Error"
@@ -221,12 +233,12 @@ class TasksViewController: NSViewController {
     }
   }
   
-  // End script/exit app
+  // Ends script/exit app
   @IBAction func stopTask(_ sender:AnyObject) {
       buildTask.terminate()
   }
   
-  // Run ssdtGen.command script
+  // Runs ssdtGen.command script
   func runScript(_ arguments:[String]) {
     
     //1 - Reset input boxes while script is running
@@ -243,6 +255,7 @@ class TasksViewController: NSViewController {
     exitButton.isEnabled = false
     spinner.startAnimation(self)
     toggleNVMEBox(false)
+    toggleNVMETextColor(greyText)
     
     isRunning = true
     

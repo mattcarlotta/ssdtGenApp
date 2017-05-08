@@ -122,10 +122,10 @@
 			isa = PBXGroup;
 			children = (
 				63B68C0A1EB104CF004AE620 /* AppDelegate.swift */,
+				63B68C101EB14114004AE620 /* HelpController.swift */,
 				AD0984A91C92FB6A00E71620 /* TasksViewController.swift */,
 				AD0984A71C92FAC200E71620 /* Main.storyboard */,
 				A1818B5B16FE271100684672 /* Supporting Files */,
-				63B68C101EB14114004AE620 /* HelpController.swift */,
 			);
 			path = ssdtGenProject;
 			sourceTree = "<group>";
@@ -351,7 +351,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/ssdtGenProject/ssdtGen-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mfc88.ssdtGen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -371,7 +371,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/ssdtGenProject/ssdtGen-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mfc88.ssdtGen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
