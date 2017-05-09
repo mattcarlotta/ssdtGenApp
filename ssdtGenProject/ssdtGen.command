@@ -73,6 +73,8 @@ completeACPI=$4
 #PCI Bridge
 pciBridge=$5
 
+#IASL compile result
+compileResults=""
 
 #===============================================================================##
 ## CHECK DEVICE PROPERTY SEARCH RESULTS #
@@ -784,22 +786,23 @@ function _compileSSDT
   ((gCount++))
   #give user ownership over gen'd SSDTs
   chown $gUSER $gSSDT
-  echo "Attemping to compile: ${gSSDTID}.dsl"
+  echo ""
+  echo "Attempting to compile: ${gSSDTID}.dsl"
+  echo ""
   #attempt to compile gen'd SSDTs
   iasl -G "$gSSDT"
   if [[ $? -ne 0 ]];
     then
-      echo ""
-      echo "—-ERROR—- SSDT-$SSDT.dsl has failed to compile!"
-      echo "Please run this script in debug mode to generate a debug_output text file."
-      echo ""
+      compileResults="—-ERROR—- SSDT-$SSDT.dsl has failed to compile!"
     else
-      echo ""
-      echo "—-SUCCESS—- SSDT-$SSDT.aml was created!"
-      echo ""
+      compileResults="—-SUCCESS—- SSDT-$SSDT.aml was created!"
   fi
+  echo ""
   echo "Removing: ${gSSDTID}.dsl"
-  echo '---------------------------------------------------------------------------------------------------------------------------------------------'
+  echo ""
+  echo "-----------------------------------------------------------------------------------------------------------------------------------------------------"
+  echo "$compileResults"
+  echo "-----------------------------------------------------------------------------------------------------------------------------------------------------"
   #remove gen'd SSDT-XXXX.dsl files
   rm "$gSSDT"
 
@@ -825,7 +828,9 @@ function _printHeader()
 {
   #set SSDTs based upon moboID
   gSSDTID="SSDT-${gTableID[$gCount]}"
-  echo 'Creating: '${gSSDTID}'.dsl'
+  echo ""
+  echo "Creating: ${gSSDTID}.dsl"
+  echo ""
   #set a new SSDT-XXXX.dsl directory
   gSSDT="${gPath}/${gSSDTID}.dsl"
 
@@ -858,15 +863,13 @@ function _checkIf_PATH_Exists()
         then
           echo ''
           echo "—-ERROR—- There was a problem locating $NVMEDEVICE's leafnode ($NVMELEAFNODE)!"
-          echo "Please make sure the ACPI path submitted is correct!"
           exit 0
-      else
+        else
         #otherwise, display INCOMPLETENVMEPATH error
-        echo ''
-        echo "—-ERROR—- There was a problem locating $INCOMPLETENVMEPATH!"
-        echo "Please make sure the ACPI path submitted is correct!"
-        exit 0
-    fi
+          echo ''
+          echo "—-ERROR—- There was a problem locating $INCOMPLETENVMEPATH!"
+          exit 0
+      fi
   fi
 }
 

@@ -332,7 +332,7 @@ class TasksViewController: NSViewController {
       //5.
       DispatchQueue.main.async(execute: {
         let previousOutput = self.outputText.string ?? ""
-        let nextOutput = previousOutput + "\n" + outputString
+        let nextOutput = previousOutput + outputString
         self.outputText.backgroundColor = NSColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1);
         self.outputText.string = nextOutput
         
