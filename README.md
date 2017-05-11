@@ -1,8 +1,8 @@
-# ssdtGenApp 0.2.1beta
+# ssdtGenApp 0.2.2beta
 
 Introduction
 
-ssdtGen is an app that attempts to build and compile custom SSDTs for X99/Z170 systems (see first note below) running Mac OS. Specifically, it will inject properties into your ACPI tables for: on-board sound, an external GPU/HDMI audio, sSata Contoller, ethernet, IMEI controller, LPC support, NVMe devices, Sata Controller, SBUS controller, XHC usb power options, and XOSI support.
+ssdtGen is an app that attempts to build and compile custom SSDTs for X99/Z170/Z97/H97 systems (see first note below) running Mac OS. Specifically, it will inject properties into your ACPI tables for: on-board sound, an external GPU/HDMI audio, sSata Contoller, ethernet, IMEI controller, LPC support, NVMe devices, Sata Controller, SBUS controller, XHC usb power options, and XOSI support.
 
 Note 1: Regardless of motherboard, you can build a custom NVME SSDT that'll work in conjunction with Rehabman's spoofed <a href="http://www.insanelymac.com/forum/topic/312803-patch-for-using-nvme-under-macos-sierra-is-ready/page-55#entry2405345">HackrNVMeFamily-10_xx_x.kext</a>. If you're unfamiliar with how NVME injection works and what is required, please read one or both of the guides in footnote 2 (††) in the "Limitation Notes" below.
 
@@ -22,7 +22,7 @@ You must initially run the ssdtGen as a ROOT user otherwise you may receive an e
 sudo $HOME/Desktop/ssdtGen.app/Contents/MacOS/ssdtGen
 ```
 
-Go here for more support: <a href="http://www.insanelymac.com/forum/topic/322811-ssdtgen-custom-generated-ssdts-x99z170-systems/">ssdtGen - custom generated SSDTs (x99/z170 systems)</a>
+Go here for more support: <a href="http://www.insanelymac.com/forum/topic/322811-ssdtgen-custom-generated-ssdts-x99z170-systems/">ssdtGen - custom generated SSDTs (x99/z170/z97/h97 systems)</a>
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -44,6 +44,6 @@ GPU's attached, only the first one will be injected.
 
 †† In order to generate a spoofed HackrNVMeFamily-10_xx_x.kext to work with SSDT-NVME.aml, please follow:
 * <a href="https://www.tonymacx86.com/threads/guide-hackrnvmefamily-co-existence-with-ionvmefamily-using-class-code-spoof.210316/">HackrNVMeFamily co-existence with IONVMeFamily using class-code spoof<a/>
-* <a href="http://www.insanelymac.com/forum/topic/312803-patch-for-using-nvme-under-macos-sierra-is-ready/page-37#entry2343228">Generic HackrNVMeFamily guide<a/> (skip steps 9-11, as this app will generate one for you)
+* <a href="http://www.insanelymac.com/forum/topic/312803-patch-for-using-nvme-under-macos-sierra-is-ready/page-37#entry2343228">Generic HackrNVMeFamily guide<a/> (skip steps 8 and 9, as this app will generate one for you)
 
 **Note: This app is in beta testing. Therefore, expect some bugs/issues to occur.

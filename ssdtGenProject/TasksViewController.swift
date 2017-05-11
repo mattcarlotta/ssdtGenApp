@@ -55,7 +55,7 @@ class TasksViewController: NSViewController {
   var completeACPI = ""
   var pciBridge = ""
   var textError = ""
-  var SSDTs = ["ALZA", "EVSS", "GFX1", "GLAN", "HDAS", "HECI", "LPC0", "LPCB", "NVME", "SAT0", "SAT1", "SBUS", "SMBS", "XHC", "XOSI"]
+  var SSDTs = ["ALZA", "EVSS", "GFX1", "GLAN", "HDAS", "HECI", "LPC0", "LPCB", "NVME", "PNLF", "SAT0", "SAT1", "SBUS", "SMBS", "XHC", "XOSI"]
   var userSelectedSSDT = ""
   var whiteText = NSColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
   var greyText = NSColor(red: 152/255, green: 152/255, blue: 152/255, alpha: 1)

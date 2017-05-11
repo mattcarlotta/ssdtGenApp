@@ -56,7 +56,7 @@ export TERM=dumb
 gTableID=""
 
 #Motherboad ID array
-gMoboID=('X99' 'Z170' 'MAXIMUS')
+gMoboID=('X99' 'Z170' 'MAXIMUS' 'Z97' 'H97')
 
 #Selected input mode
 debugScript=$1 #debug script
@@ -435,7 +435,7 @@ function _findDevice_Address()
   echo '                   Name (P1IN, 0x16)'                                             >> "$gSSDT"
   echo '                   Scope (\_GPE)'                                                 >> "$gSSDT"
   echo '                   {'                                                             >> "$gSSDT"
-  if [[ "$moboID" = "X99" ]];
+  if [[ "$moboID" = "X99" ]] || [[ "$moboID" = "Z97" ]] || [[ "$moboID" = "H97" ]];
     then
       echo '                        Method (_L16, 0, NotSerialized)'                      >> "$gSSDT"
     else
@@ -614,7 +614,13 @@ function _buildSSDT()
       _setDeviceProp '"built-in"' '0x00'
       _setDeviceProp '"model"' '"Realtek Audio Controller"'
       _setDeviceProp '"hda-gfx"' '"onboard-1"'
-      _setDeviceProp '"layout-id"' '0x01, 0x00, 0x00, 0x00'
+      if [[ "$moboID" == "Z97" ]] || [[ "$moboID" == "H97" ]];
+        then
+          _setDeviceProp '"layout-id"' '0x05, 0x00, 0x00, 0x00'
+          _setDeviceProp '"MaximumBootBeepVolume"' '0x01'
+        else
+          _setDeviceProp '"layout-id"' '0x01, 0x00, 0x00, 0x00'
+      fi
       _setDeviceProp '"PinConfigurations"' '0x00'
       _findDeviceProp 'compatible' 'IOName'
       _close_Brackets
@@ -653,7 +659,12 @@ function _buildSSDT()
       _findAUDIO
       _setDeviceProp '"hda-gfx"' '"onboard-2"'
       _setDeviceProp '"PinConfigurations"' '0xe0, 0x00, 0x56, 0x28'
-      _findDeviceProp 'device-id' 'AUDIO'
+      if [[ "$moboID" == "Z97" ]] || [[ "$moboID" == "H97" ]];
+        then
+          _setDeviceProp '"layout-id"' '0x05, 0x00, 0x00, 0x00'
+        else
+          _findDeviceProp 'device-id' 'AUDIO'
+      fi
       _close_Brackets
       _setGPUDevice_Status
   fi
@@ -662,12 +673,16 @@ function _buildSSDT()
     then
       _getExtDevice_Address $SSDT
       _setDeviceProp '"AAPL,slot-name"' '"Built In"'
-      if [[ "$moboID" = "Z170" ]];
+      if [[ "$moboID" == "Z170" ]];
         then
-          _setDeviceProp '"model"' '"Intel i219V"'
+          glanSeries="i219V"
+        elif [[ "$moboID" == "Z97" ]] || [[ "$moboID" == "H97" ]];
+        then
+          glanSeries="i218V2"
         else
-          _setDeviceProp '"model"' '"Intel i218V"'
+          glanSeries="i218V"
       fi
+      _setDeviceProp '"model"' '"Intel '$glanSeries' PCI Express Gigabit Ethernet"'
       _setDeviceProp '"name"' '"Ethernet Controller"'
       _setDeviceProp '"built-in"' '0x00'
       _findDeviceProp 'device-id'
@@ -709,10 +724,22 @@ function _buildSSDT()
       _getExtDevice_Address $SSDT
       if [[ "$moboID" = "Z170" ]];
         then
+          _setDeviceProp '"device-id"' '"0xC1, 0x9C, 0x00, 0x00"'
           _setDeviceProp '"compatible"' '"pci8086,9cc1"'
+          _setDeviceProp '"name"' '"pci8086,9cc1"'
         else
+          _setDeviceProp '"device-id"' '"0x43, 0x9C, 0x00, 0x00"'
           _setDeviceProp '"compatible"' '"pci8086,9c43"'
+          _setDeviceProp '"name"' '"pci8086,9c43"'
       fi
+      _close_Brackets
+  fi
+
+  if [[ "$SSDT" == "PNLF" ]];
+    then
+      _getExtDevice_Address $SSDT
+      _setDeviceProp '"refnum"' '"Zero"'
+      _setDeviceProp '"type"' '"0x49324300"'
       _close_Brackets
   fi
 
@@ -723,13 +750,16 @@ function _buildSSDT()
       _setDeviceProp '"built-in"' '0x00'
       _setDeviceProp '"device-type"' '"AHCI Controller"'
       _setDeviceProp '"name"' '"Intel AHCI Controller"'
-      if [[ "$moboID" = "Z170" ]];
+      if [[ "$moboID" == "Z170" ]];
         then
-          _setDeviceProp '"model"' '"Intel 10 Series Chipset Family SATA Controller"'
+          audioSeries="10"
+        elif [[ "$mobID" == "Z97" ]] || [[ "$mobID" == "H97" ]];
+        then
+          audioSeries="9"
         else
-          _setDeviceProp '"model"' '"Intel 99 Series Chipset Family SATA Controller"'
+          audioSeries="99"
       fi
-
+      _setDeviceProp '"model"' '"Intel '$audioSeries' Series Chipset Family SATA Controller"'
       _findDeviceProp 'compatible' 'IOName'
       _findDeviceProp 'device-id'
       _close_Brackets
@@ -737,7 +767,7 @@ function _buildSSDT()
 
   if [ "$SSDT" == "SMBS" ] || [ "$SSDT" == "SBUS" ];
     then
-      if [[ "$moboID" = "Z170" ]];
+      if [[ "$moboID" = "Z170" ]] || [[ "$mobID" == "Z97" ]] || [[ $mobID == "H97" ]];
         then
           _findDevice_Address "${SSDT}" "SMBS"
         else
@@ -754,12 +784,16 @@ function _buildSSDT()
       _getExtDevice_Address $SSDT
       _setDeviceProp '"AAPL,slot-name"' '"Built In"'
       _setDeviceProp '"name"' '"Intel XHC Controller"'
-      if [[ "$moboID" = "Z170" ]];
+      if [[ "$moboID" == "Z170" ]];
         then
-          _setDeviceProp '"model"' '"Intel 10 Series Chipset Family USB xHC Host Controller"'
+          xhcSeries="10"
+        elif [[ "$mobID" == "Z97" ]] || [[ $mobID == "H97" ]];
+          then
+            xhcSeries="9"
         else
-          _setDeviceProp '"model"' '"Intel 99 Series Chipset Family USB xHC Host Controller"'
+          xhcSeries="99"
       fi
+      _setDeviceProp '"model"' '"Intel '$xhcSeries' Series Chipset Family USB xHC Host Controller"'
       _setDevice_NoBuffer '"AAPL,current-available"' '0x0834'
       _setDevice_NoBuffer '"AAPL,current-extra"' '0x0A8C'
       _setDevice_NoBuffer '"AAPL,current-in-sleep"' '0x0A8C'
@@ -1009,19 +1043,22 @@ function _checkBoard
     fi
   done
 
-  #check to see if moboID matches X99, Z170 or MAXIMUS
+  #check to see if moboID matches X99, Z170, MAXIMUS, Z97, or H97
   if [[ "$moboID" = "X99" ]];
     then
       gTableID=('ALZA' 'EVSS' 'GFX1' 'GLAN' 'HECI' 'LPC0' 'SAT1' 'SMBS' 'XHC' 'XOSI' 'NVME')
     elif [[ "$moboID" = "Z170" ]] || [[ "$moboID" = "MAXIMUS" ]];
       then
       gTableID=('GLAN' 'GFX1' 'HDAS' 'HECI' 'LPCB' 'SAT0' 'SBUS' 'XHC' 'XOSI' 'NVME')
-  else
-    #if moboID doesn't match, display error, exit script
-    echo ""
-    echo "—-ERROR—- This script only supports X99/Z170 motherboards at the moment!"
-    echo ""
-    exit 0
+    elif [[ "$moboID" = "Z97" ]] || [[ "$moboID" = "H97" ]];
+      then
+      gTableID=('GLAN' 'GFX1' 'HDAS' 'LPCB' 'PNLF' 'SAT0' 'SBUS' 'XHC' 'XOSI' 'NVME')
+    else
+      #if moboID doesn't match, display error, exit script
+      echo ""
+      echo "—-ERROR—- This script only supports X99/Z170/Z97/H97 motherboards at the moment!"
+      echo ""
+      exit 0
   fi
 }
 
