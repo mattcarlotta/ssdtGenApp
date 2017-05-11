@@ -1056,7 +1056,7 @@ function _checkBoard
     else
       #if moboID doesn't match, display error, exit script
       echo ""
-      echo "—-ERROR—- This script only supports X99/Z170/Z97/H97 motherboards at the moment!"
+      echo "—-ERROR—- This app only supports X99/Z170/Z97/H97 motherboards at the moment!"
       echo ""
       exit 0
   fi
